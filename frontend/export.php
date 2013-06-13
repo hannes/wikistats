@@ -5,16 +5,20 @@ $db = monetdb_connect("sql","bristol.ins.cwi.nl",50000,"monetdb","monetdb","wiki
 $hasJsonp = false;
 $jsonp = "";
 $lang = "en";
+date_default_timezone_set("UTC");
 
 if (isset($_REQUEST["callback"]) && !empty($_REQUEST["callback"])) {
 	$hasJsonp = true;
 	$jsonp = $_REQUEST["callback"];
+	if (!ereg("^[[:alnum:]\_]+$",$jsonp)) {
+		http_response_code(400);
+		die("Invalid callback request parameter");
+	}
 }
 
 $json = array();
 
 if (isset($_REQUEST['page'])) {
-
 	$pages = $_REQUEST["page"];
 	if (sizeof($pages) < 1) {
 		http_response_code(400);
@@ -22,6 +26,13 @@ if (isset($_REQUEST['page'])) {
 	}
 	if (!is_array($pages)) {
 		$pages = array($pages);
+	}
+
+	foreach ($pages as $page) {
+		if (!ereg("^[[:upper:]][[:alnum:]_-]+$",$page)) {
+			http_response_code(400);
+			die("Invalid page[] request parameter(s)");
+		}
 	}
 
 	$query = "SELECT \"page\",\"year\",\"week\",\"count\" FROM \"weekcountenf\" WHERE \"lang\"='".$lang."' AND \"page\" in ('".implode($pages,"','")."') ORDER BY \"page\", \"week\";";
@@ -37,10 +48,12 @@ if (isset($_REQUEST['page'])) {
 
 if (isset($_REQUEST['suggest'])) {
 	$suggest = strtolower(trim($_REQUEST['suggest']));
-	if (strlen($suggest) == 0) {
+
+	if (!ereg("^[[:alnum:][:space:]_-]+$",$suggest)) {
 		http_response_code(400);
-		die("Empty 'suggest' request parameter");
+		die("Invalid suggest request parameter(s)");
 	}
+
 	$query = "SELECT \"page\",100000000 as \"countsum\" FROM \"pages\" WHERE lcase(\"page\")  = '".$suggest."' UNION ALL SELECT \"page\",\"countsum\" FROM \"pages\" WHERE lcase(\"page\")  like '%".$suggest."%' and not(lcase(\"page\") = '".$suggest."') ORDER BY countsum DESC LIMIT 10;";
 	$res = monetdb_query($db, monetdb_escape_string($query)) or trigger_error(monetdb_last_error());
 	while ( $row = monetdb_fetch_object($res) ){

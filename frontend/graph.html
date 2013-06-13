@@ -51,17 +51,15 @@ body {
 		</div>
 		<br>
 		<br>
-		<p><small>Developed by <a href="http://hannes.muehleisen.org/">Hannes M&uuml;hleisen</a> at <a href="http://www.cwi.nl/">CWI</a> in 2013. Powered by <a href="http://www.monetdb.org/">MonetDB</a> and <a href="http://code.shutterstock.com/rickshaw/">Rickshaw</a>. Data taken from the <a href="http://dumps.wikimedia.org/other/pagecounts-raw/">Page view statistics for Wikimedia projects</a>. </small></p>
+		<p><small>Developed by <a href="http://hannes.muehleisen.org/">Hannes M&uuml;hleisen</a> at <a href="http://www.cwi.nl/">CWI</a> in 2013. Powered by <a href="http://www.monetdb.org/">MonetDB</a> and <a href="http://code.shutterstock.com/rickshaw/">Rickshaw</a>. Data taken from the <a href="http://dumps.wikimedia.org/other/pagecounts-raw/">Page view statistics for Wikimedia projects</a>. Code is <a href="https://github.com/hannesmuehleisen/wikistats">on GitHub</a>. </small></p>
 	</div>
-
-
-
-
-<!---->
 
 <script>
 
 (function() {
+
+	var callback = "export.php";
+
 	var palette = new Rickshaw.Color.Palette();
 	var time = new Rickshaw.Fixtures.Time();
 	var tu = time.unit('week');
@@ -102,12 +100,10 @@ body {
 
 	}
 
-
-
  $( "#page" ).autocomplete({
       source: function( request, response ) {
         $.ajax({
-          url: "http://localhost:8000/export.php",
+          url: callback,
           dataType: "jsonp",
           data: {
             suggest: request.term.replace(/ /g,'_')
@@ -165,10 +161,13 @@ body {
 
 	function addPage(term) {
 		$.ajax( {
-				url: "http://localhost:8000/export.php?page=" + term,
+				url: callback,
 				dataType: 'jsonp',
 				success: addData,
-				error: handleError
+				error: handleError,
+				data: {
+            		page: term
+          		}
 			} );
 	}
 
