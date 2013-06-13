@@ -1,0 +1,35 @@
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>nl.cwi.da.wikistat</groupId>
+	<artifactId>wikistat</artifactId>
+	<name>wikistat</name>
+
+	<packaging>jar</packaging>
+	<version>0.1</version>
+
+	<properties>
+		<pig.version>0.11.1</pig.version>
+		<hadoop.version>1.2.0</hadoop.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>org.apache.pig</groupId>
+			<artifactId>pig</artifactId>
+			<version>${pig.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.hadoop</groupId>
+			<artifactId>hadoop-core</artifactId>
+			<version>${hadoop.version}</version>
+		</dependency>
+
+	</dependencies>
+
+</project>

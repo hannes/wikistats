@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Wikipedia Clicks</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link type="text/css" rel="stylesheet" href="css/rickshaw.min.css">
+<link type="text/css" rel="stylesheet" href="css/jquery-ui.min.css">
+
+	<script src="js/d3.min.js"></script>
+	<script src="js/jquery.min.js"></script>
+	<script src="js/jquery-ui.min.js"></script>
+	<script src="js/rickshaw.min.js"></script>
+
+
+<style>
+body {
+	padding-top: 60px;
+}
+
+#slider_container {
+	height: 14px;
+}
+</style>
+
+</head>
+
+<body>
+
+	<div class="navbar navbar-inverse navbar-fixed-top">
+		<div class="navbar-inner">
+			<div class="container">
+				<button type="button" class="btn btn-navbar" data-toggle="collapse"
+					data-target=".nav-collapse">
+					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="brand" href="#">Wikipedia Clicks</a>
+			</div>
+		</div>
+	</div>
+
+	<div class="container">
+		<div id="chart_container">
+			<div id="slider_container"><div id="slider"></div></div>
+			<div id="chart"></div>
+			<div id="legend_container"><div id="legend"></div></div>
+
+			<input type="text" id="page" >
+		</div>
+		<br>
+		<br>
+		<p><small>Developed by <a href="http://hannes.muehleisen.org/">Hannes M&uuml;hleisen</a> at <a href="http://www.cwi.nl/">CWI</a> in 2013. Powered by <a href="http://www.monetdb.org/">MonetDB</a> and <a href="http://code.shutterstock.com/rickshaw/">Rickshaw</a>. Data taken from the <a href="http://dumps.wikimedia.org/other/pagecounts-raw/">Page view statistics for Wikimedia projects</a>. </small></p>
+	</div>
+
+
+
+
+<!---->
+
+<script>
+
+(function() {
+	var palette = new Rickshaw.Color.Palette();
+	var time = new Rickshaw.Fixtures.Time();
+	var tu = time.unit('week');
+	var data = [];
+	var graph = null;
+	var legend = null;
+	var highlighter;
+	var shelving;
+
+	var width = 1000;
+	var height = 600;
+
+	$('#chart').width(width);
+	$('#chart').height(height);
+
+	function initGraph() {
+		
+		graph = new Rickshaw.Graph( {
+			element: document.querySelector('#chart'),
+			width: width,
+			height: height,
+			renderer: 'line',
+			series : data
+		} );
+
+
+		/*var slider = new Rickshaw.Graph.RangeSlider({
+		    graph: graph,
+		    element: document.querySelector('#slider')
+		});*/
+
+		var hoverDetail = new Rickshaw.Graph.HoverDetail( {
+		    graph: graph,
+		    xFormatter: function(x) { return tu.formatter(new Date(x * 1000)) + " - " + tu.formatter(new Date((x+604800) * 1000 )) },
+		    yFormatter: function(y) { return Math.floor(y) + " clicks" }
+		} );
+
+
+	}
+
+
+
+ $( "#page" ).autocomplete({
+      source: function( request, response ) {
+        $.ajax({
+          url: "http://localhost:8000/export.php",
+          dataType: "jsonp",
+          data: {
+            suggest: request.term.replace(/ /g,'_')
+          },
+          success: function( data ) {
+          	 response( $.map( data, function( item ) {
+              return {
+                label: item.replace(/_/g,' '),
+                value: item
+              }
+            }));
+          }
+        });
+      },
+      minLength: 3,
+      select: function( event, ui ) {
+      	addPage(ui.item.value);
+      	this.value = "";
+      },
+    });
+
+	function addData(series) {
+		var d = series[0];
+		d.color = palette.color();
+		d.name = d.name.replace(/_/g,' ');
+		data.push(d);
+		Rickshaw.Series.zeroFill(data);
+
+		if (graph == null) {
+			initGraph();
+		}
+		graph.update();
+		$('#legend').empty();
+
+		legend = new Rickshaw.Graph.Legend({
+		    graph: graph,
+		    element: document.querySelector('#legend')
+		});
+
+		highlighter = new Rickshaw.Graph.Behavior.Series.Highlight({
+			graph: graph,
+			legend: legend
+		});
+
+		shelving = new Rickshaw.Graph.Behavior.Series.Toggle({
+		    graph: graph,
+		    legend: legend
+		});
+
+	}
+
+	function handleError(err) {
+		console.log(err);
+	}
+
+	function addPage(term) {
+		$.ajax( {
+				url: "http://localhost:8000/export.php?page=" + term,
+				dataType: 'jsonp',
+				success: addData,
+				error: handleError
+			} );
+	}
+
+
+})();
+</script>
+
+
+
+</body>
+</html>
