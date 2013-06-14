@@ -19,10 +19,11 @@ if (isset($_REQUEST["callback"]) && !empty($_REQUEST["callback"])) {
 $json = array();
 
 if (isset($_REQUEST['page'])) {
-	$pages = $_REQUEST["page"];
+	$pages = explode(",",$_REQUEST["page"]);
+
 	if (sizeof($pages) < 1) {
 		http_response_code(400);
-		die("Empty 'page[]' request parameter(s)");
+		die("Empty 'page' request parameter");
 	}
 	if (!is_array($pages)) {
 		$pages = array($pages);

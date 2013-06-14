@@ -13,6 +13,7 @@
 <script src="js/d3.min.js"></script>
 <script src="js/jquery.min.js"></script>
 <script src="js/jquery-ui.min.js"></script>
+<script src="js/purl.js"></script>
 <script src="js/rickshaw.min.js"></script>
 
 
@@ -63,6 +64,8 @@ form {
 
 	<div class="container">
 
+			<div id="progress"></div>
+
 
 		<div id="chart_container">
 			<div id="chart"></div>
@@ -82,8 +85,8 @@ form {
 		<p>
 			<small>Developed by <a href="http://hannes.muehleisen.org/">Hannes
 					M&uuml;hleisen</a> at <a href="http://www.cwi.nl/">CWI</a> in 2013.
-				Powered by <a href="http://www.monetdb.org/">MonetDB</a> and <a
-				href="http://code.shutterstock.com/rickshaw/">Rickshaw</a>. Data
+				Powered by <a href="http://www.monetdb.org/">MonetDB</a>, <a
+				href="http://code.shutterstock.com/rickshaw/">Rickshaw</a> and <a href="http://twitter.github.io/bootstrap/">Bootstrap</a>.<br>Data
 				taken from the <a
 				href="http://dumps.wikimedia.org/other/pagecounts-raw/">Page
 					view statistics for Wikimedia projects</a>. Code is <a
@@ -184,10 +187,12 @@ form {
 			});
 
 			function addData(series) {
-				var d = series[0];
-				d.color = palette.color();
-				d.name = d.name.replace(/_/g, ' ');
-				data.push(d);
+				$.each(series,function(i,d) {
+					d.color = palette.color();
+					d.name = d.name.replace(/_/g, ' ');
+					data.push(d);
+				});
+				
 				//Rickshaw.Series.zeroFill(data);
 
 				if (graph == null) {
@@ -217,6 +222,9 @@ form {
 				});
 
 				xAxis.render();
+				
+				$('#progress').hide();
+
 
 				//graph.configure();
 
@@ -224,20 +232,44 @@ form {
 
 			function handleError(err) {
 				console.log(err);
+
 			}
 
-			function addPage(term) {
+			
+			
+			
+			
+			function addPage(terms) {
+				if (!$.isArray(terms)) {
+					var term = terms;
+					terms = [];
+					terms.push(term);
+				}
+				
+			$('#progress').text('loading...');
+			$('#progress').show();
+
 				$.ajax({
 					url : callback,
 					dataType : 'jsonp',
 					success : addData,
 					error : handleError,
 					data : {
-						page : term
+						page : terms.join(",")
 					}
 				});
+				
+				
 			}
-
+			
+			
+			// check if we have been given some url parameters to initialize our graph with
+			
+			var seriesp = $.url().param('series')
+			if (seriesp != undefined) {
+				var terms = seriesp.split(",");				
+				addPage(terms);
+			}
 		})();
 	</script>
 
