@@ -55,7 +55,7 @@ if (isset($_REQUEST['suggest'])) {
 		die("Invalid suggest request parameter(s)");
 	}
 
-	$query = "SELECT \"page\",100000000 as \"countsum\" FROM \"pages\" WHERE lcase(\"page\")  = '".$suggest."' UNION ALL SELECT \"page\",\"countsum\" FROM \"pages\" WHERE lcase(\"page\")  like '%".$suggest."%' and not(lcase(\"page\") = '".$suggest."') ORDER BY countsum DESC LIMIT 10;";
+	$query = "SELECT \"page\",100000000 as \"countsum\" FROM \"pagessuggest\" WHERE lcase(\"page\")  = '".$suggest."' UNION ALL SELECT \"page\",\"countsum\" FROM \"pagessuggest\" WHERE lcase(\"page\")  like '%".$suggest."%' and not(lcase(\"page\") = '".$suggest."') ORDER BY countsum DESC LIMIT 10;";
 	$res = monetdb_query($db, monetdb_escape_string($query)) or trigger_error(monetdb_last_error());
 	while ( $row = monetdb_fetch_object($res) ){
 		$json[] = $row->page;
