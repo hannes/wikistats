@@ -10,7 +10,7 @@ date_default_timezone_set("UTC");
 if (isset($_REQUEST["callback"]) && !empty($_REQUEST["callback"])) {
 	$hasJsonp = true;
 	$jsonp = $_REQUEST["callback"];
-	if (!ereg("^[[:alnum:]\_]+$",$jsonp)) {
+	if (!ereg("^[[:alnum:]_]+$",$jsonp)) {
 		http_response_code(400);
 		die("Invalid callback request parameter");
 	}
@@ -35,7 +35,7 @@ if (isset($_REQUEST['page'])) {
 		}
 	}
 
-	$query = "SELECT \"page\",\"year\",\"week\",\"count\" FROM \"weekcountenf\" WHERE \"lang\"='".$lang."' AND \"page\" in ('".implode($pages,"','")."') ORDER BY \"page\", \"week\";";
+	$query = "SELECT \"page\",\"year\",\"week\",\"count\" FROM \"weekcountenf\" WHERE \"lang\"='".$lang."' AND \"page\" in ('".implode($pages,"','")."') ORDER BY \"page\", \"year\", \"week\";";
 	$res = monetdb_query($db, monetdb_escape_string($query)) or trigger_error(monetdb_last_error());
 	while ( $row = monetdb_fetch_object($res) ){
 		$json[$row->page]["data"][] = array("x"=>strtotime($row->year."W".sprintf('%02d', $row->week)),"y" =>  intval($row->count));

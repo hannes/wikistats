@@ -7,11 +7,13 @@
 <link href="css/bootstrap.min.css" rel="stylesheet">
 <link type="text/css" rel="stylesheet" href="css/rickshaw.min.css">
 <link type="text/css" rel="stylesheet" href="css/jquery-ui.min.css">
+<link rel="shortcut icon"
+	href="http://bits.wikimedia.org/favicon/wikipedia.ico" />
 
-	<script src="js/d3.min.js"></script>
-	<script src="js/jquery.min.js"></script>
-	<script src="js/jquery-ui.min.js"></script>
-	<script src="js/rickshaw.min.js"></script>
+<script src="js/d3.min.js"></script>
+<script src="js/jquery.min.js"></script>
+<script src="js/jquery-ui.min.js"></script>
+<script src="js/rickshaw.min.js"></script>
 
 
 <style>
@@ -19,8 +21,26 @@ body {
 	padding-top: 60px;
 }
 
-#slider_container {
-	height: 14px;
+#chart_container {
+	display: inline-block;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+#chart {
+	float: left;
+}
+
+#legend {
+	float: left;
+	margin-left: 15px;
+}
+
+#page {
+	width: 400px;
+}
+
+form {
+	padding-top: 20px;
 }
 </style>
 
@@ -42,138 +62,184 @@ body {
 	</div>
 
 	<div class="container">
-		<div id="chart_container">
-			<div id="slider_container"><div id="slider"></div></div>
-			<div id="chart"></div>
-			<div id="legend_container"><div id="legend"></div></div>
 
-			<input type="text" id="page" >
+
+		<div id="chart_container">
+			<div id="chart"></div>
+			<div id="legend"></div>
 		</div>
-		<br>
-		<br>
-		<p><small>Developed by <a href="http://hannes.muehleisen.org/">Hannes M&uuml;hleisen</a> at <a href="http://www.cwi.nl/">CWI</a> in 2013. Powered by <a href="http://www.monetdb.org/">MonetDB</a> and <a href="http://code.shutterstock.com/rickshaw/">Rickshaw</a>. Data taken from the <a href="http://dumps.wikimedia.org/other/pagecounts-raw/">Page view statistics for Wikimedia projects</a>. Code is <a href="https://github.com/hannesmuehleisen/wikistats">on GitHub</a>. </small></p>
+
+
+		<form class="form-search">
+			<fieldset>
+				<input id="page" type="text"
+					placeholder="Start typing a page title here…"
+					class="input-medium search-query">
+			</fieldset>
+		</form>
+
+
+		<p>
+			<small>Developed by <a href="http://hannes.muehleisen.org/">Hannes
+					M&uuml;hleisen</a> at <a href="http://www.cwi.nl/">CWI</a> in 2013.
+				Powered by <a href="http://www.monetdb.org/">MonetDB</a> and <a
+				href="http://code.shutterstock.com/rickshaw/">Rickshaw</a>. Data
+				taken from the <a
+				href="http://dumps.wikimedia.org/other/pagecounts-raw/">Page
+					view statistics for Wikimedia projects</a>. Code is <a
+				href="https://github.com/hannesmuehleisen/wikistats">on GitHub</a>.
+			</small>
+		</p>
 	</div>
 
-<script>
+	<script>
+		(function() {
 
-(function() {
+			var callback = "export.php";
 
-	var callback = "export.php";
+			var palette = new Rickshaw.Color.Palette();
+			var time = new Rickshaw.Fixtures.Time();
+			var tu = time.unit('week');
+			var year = time.unit('year');
 
-	var palette = new Rickshaw.Color.Palette();
-	var time = new Rickshaw.Fixtures.Time();
-	var tu = time.unit('week');
-	var data = [];
-	var graph = null;
-	var legend = null;
-	var highlighter;
-	var shelving;
+			var data = [];
+			var graph = null;
+			var legend = null;
+			var highlighter;
+			var shelving;
 
-	var width = 1000;
-	var height = 600;
+			var width = 750;
+			var height = 500;
 
-	$('#chart').width(width);
-	$('#chart').height(height);
+			$('#chart').width(width);
+			$('#chart').height(height);
 
-	function initGraph() {
-		
-		graph = new Rickshaw.Graph( {
-			element: document.querySelector('#chart'),
-			width: width,
-			height: height,
-			renderer: 'line',
-			series : data
-		} );
+			function initGraph() {
+				graph = new Rickshaw.Graph({
+					element : document.querySelector('#chart'),
+					width : width,
+					height : height,
+					renderer : 'line',
+					series : data,
+					interpolation : "linear"
+				});
 
+				var hoverDetail = new Rickshaw.Graph.HoverDetail({
+					graph : graph,
+					xFormatter : function(x) {
+						return tu.formatter(new Date(x * 1000)) + " - "
+								+ tu.formatter(new Date((x + 604800) * 1000))
+					},
+					yFormatter : function(y) {
+						return Math.floor(y) + " clicks"
+					}
+				});
 
-		/*var slider = new Rickshaw.Graph.RangeSlider({
-		    graph: graph,
-		    element: document.querySelector('#slider')
-		});*/
+				/*
+				var slider = new Rickshaw.Graph.RangeSlider({
+				    graph: graph,
+				    element: document.querySelector('#slider')
+				});
+				
+					var annotator = new Rickshaw.Graph.Annotate({
+					graph : graph,
+					element : document.querySelector('#timeline')
+				});
+					
+					$.each(
+							[ '2007', '2008', '2009', '2010', '2011', '2012',
+									'2013' ], function(i, year) {
+								annotator.add(new Date(year + '-02-01').getTime(),
+										year);
+							});
 
-		var hoverDetail = new Rickshaw.Graph.HoverDetail( {
-		    graph: graph,
-		    xFormatter: function(x) { return tu.formatter(new Date(x * 1000)) + " - " + tu.formatter(new Date((x+604800) * 1000 )) },
-		    yFormatter: function(y) { return Math.floor(y) + " clicks" }
-		} );
+				
+				 */
 
+			}
 
-	}
+			$("#page").autocomplete({
+				source : function(request, response) {
+					$.ajax({
+						url : callback,
+						dataType : "jsonp",
+						data : {
+							suggest : request.term.replace(/ /g, '_')
+						},
+						success : function(data) {
+							response($.map(data, function(item) {
+								return {
+									label : item.replace(/_/g, ' '),
+									value : item
+								}
+							}));
+						}
+					});
+				},
+				minLength : 3,
+				select : function(event, ui) {
+					addPage(ui.item.value);
+					this.value = "";
+				},
+			});
 
- $( "#page" ).autocomplete({
-      source: function( request, response ) {
-        $.ajax({
-          url: callback,
-          dataType: "jsonp",
-          data: {
-            suggest: request.term.replace(/ /g,'_')
-          },
-          success: function( data ) {
-          	 response( $.map( data, function( item ) {
-              return {
-                label: item.replace(/_/g,' '),
-                value: item
-              }
-            }));
-          }
-        });
-      },
-      minLength: 3,
-      select: function( event, ui ) {
-      	addPage(ui.item.value);
-      	this.value = "";
-      },
-    });
+			function addData(series) {
+				var d = series[0];
+				d.color = palette.color();
+				d.name = d.name.replace(/_/g, ' ');
+				data.push(d);
+				//Rickshaw.Series.zeroFill(data);
 
-	function addData(series) {
-		var d = series[0];
-		d.color = palette.color();
-		d.name = d.name.replace(/_/g,' ');
-		data.push(d);
-		Rickshaw.Series.zeroFill(data);
+				if (graph == null) {
+					initGraph();
+				}
+				graph.update();
+				$('#legend').empty();
 
-		if (graph == null) {
-			initGraph();
-		}
-		graph.update();
-		$('#legend').empty();
+				legend = new Rickshaw.Graph.Legend({
+					graph : graph,
+					element : document.querySelector('#legend')
+				});
 
-		legend = new Rickshaw.Graph.Legend({
-		    graph: graph,
-		    element: document.querySelector('#legend')
-		});
+				highlighter = new Rickshaw.Graph.Behavior.Series.Highlight({
+					graph : graph,
+					legend : legend
+				});
 
-		highlighter = new Rickshaw.Graph.Behavior.Series.Highlight({
-			graph: graph,
-			legend: legend
-		});
+				shelving = new Rickshaw.Graph.Behavior.Series.Toggle({
+					graph : graph,
+					legend : legend
+				});
 
-		shelving = new Rickshaw.Graph.Behavior.Series.Toggle({
-		    graph: graph,
-		    legend: legend
-		});
+				var xAxis = new Rickshaw.Graph.Axis.Time({
+					graph : graph,
+					timeUnit : year
+				});
 
-	}
+				xAxis.render();
 
-	function handleError(err) {
-		console.log(err);
-	}
+				//graph.configure();
 
-	function addPage(term) {
-		$.ajax( {
-				url: callback,
-				dataType: 'jsonp',
-				success: addData,
-				error: handleError,
-				data: {
-            		page: term
-          		}
-			} );
-	}
+			}
 
+			function handleError(err) {
+				console.log(err);
+			}
 
-})();
-</script>
+			function addPage(term) {
+				$.ajax({
+					url : callback,
+					dataType : 'jsonp',
+					success : addData,
+					error : handleError,
+					data : {
+						page : term
+					}
+				});
+			}
+
+		})();
+	</script>
 
 
 
