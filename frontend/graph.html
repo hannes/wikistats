@@ -37,15 +37,21 @@ body {
 }
 
 #page {
-	width: 400px;
+	width: 750px;
 }
 
 #slider {
-	width: 750px;	
+	width: 750px;
 }
 
 form {
 	padding-top: 20px;
+}
+
+#chart_container {
+	height: 500px;
+	width: 887px;
+	background-color: #e9e9e9;
 }
 </style>
 
@@ -68,15 +74,7 @@ form {
 
 	<div class="container">
 
-			<div id="progress"></div>
-
-
-		<div id="chart_container">
-			<div id="chart"></div>
-			<div id="legend"></div>
-			<div id="slider"></div>
-		</div>
-
+		<div id="progress"></div>
 
 		<form class="form-search">
 			<fieldset>
@@ -87,11 +85,21 @@ form {
 		</form>
 
 
+
+		<div id="chart_container">
+			<div id="chart"></div>
+			<div id="legend"></div>
+			<div id="slider"></div>
+		</div>
+
+
+
 		<p>
 			<small>Developed by <a href="http://hannes.muehleisen.org/">Hannes
 					M&uuml;hleisen</a> at <a href="http://www.cwi.nl/">CWI</a> in 2013.
 				Powered by <a href="http://www.monetdb.org/">MonetDB</a>, <a
-				href="http://code.shutterstock.com/rickshaw/">Rickshaw</a> and <a href="http://twitter.github.io/bootstrap/">Bootstrap</a>.<br>Data
+				href="http://code.shutterstock.com/rickshaw/">Rickshaw</a> and <a
+				href="http://twitter.github.io/bootstrap/">Bootstrap</a>.<br>Data
 				taken from the <a
 				href="http://dumps.wikimedia.org/other/pagecounts-raw/">Page
 					view statistics for Wikimedia projects</a>. Code is <a
@@ -120,9 +128,6 @@ form {
 			var width = 750;
 			var height = 500;
 
-			$('#chart').width(width);
-			$('#chart').height(height);
-
 			function initGraph() {
 				graph = new Rickshaw.Graph({
 					element : document.querySelector('#chart'),
@@ -143,12 +148,12 @@ form {
 						return Math.floor(y) + " clicks"
 					}
 				});
-				
+
 				slider = new Rickshaw.Graph.RangeSlider({
-				    graph: graph,
-				    element: document.querySelector('#slider')
+					graph : graph,
+					element : document.querySelector('#slider')
 				});
-				
+
 			}
 
 			$("#page").autocomplete({
@@ -177,12 +182,12 @@ form {
 			});
 
 			function addData(series) {
-				$.each(series,function(i,d) {
+				$.each(series, function(i, d) {
 					d.color = palette.color();
 					d.name = d.name.replace(/_/g, ' ');
 					data.push(d);
 				});
-				
+
 				//Rickshaw.Series.zeroFill(data);
 
 				if (graph == null) {
@@ -190,7 +195,7 @@ form {
 				}
 				graph.update();
 				slider.update();
-				
+
 				$('#legend').empty();
 
 				legend = new Rickshaw.Graph.Legend({
@@ -214,10 +219,11 @@ form {
 				});
 
 				xAxis.render();
-				
+
 				$('#progress').hide();
-
-
+				$('#chart_container').css('background-color', '#fff');
+				$("#page").prop('disabled', false);
+				$('#page').val('');
 				//graph.configure();
 
 			}
@@ -225,16 +231,18 @@ form {
 			function handleError(err) {
 				console.log(err);
 			}
-			
+
 			function addPage(terms) {
 				if (!$.isArray(terms)) {
 					var term = terms;
 					terms = [];
 					terms.push(term);
 				}
-				
-			$('#progress').text('loading...');
-			$('#progress').show();
+				$("#page").prop('disabled', true);
+
+				$('#progress').text('loading...');
+				$('#progress').show();
+				$('#chart_container').css('background-color', '#e9e9e9');
 
 				$.ajax({
 					url : callback,
@@ -245,16 +253,13 @@ form {
 						page : terms.join(",")
 					}
 				});
-				
-				
 			}
-			
-			
+
 			// check if we have been given some url parameters to initialize our graph with
-			
+
 			var seriesp = $.url().param('series')
 			if (seriesp != undefined) {
-				var terms = seriesp.split(",");				
+				var terms = seriesp.split(",");
 				addPage(terms);
 			}
 		})();
