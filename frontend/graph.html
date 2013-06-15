@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Wikipedia Clicks</title>
+<title>Wikipedia Page Views</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="css/bootstrap.min.css" rel="stylesheet">
 <link type="text/css" rel="stylesheet" href="css/rickshaw.min.css">
@@ -67,7 +67,7 @@ form {
 					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="brand" href="#">Wikipedia Clicks</a>
+				<a class="brand" href="#">Wikipedia Page Views</a>
 			</div>
 		</div>
 	</div>
@@ -95,8 +95,8 @@ form {
 
 
 		<p>
-			<small>Developed by <a href="http://hannes.muehleisen.org/">Hannes
-					M&uuml;hleisen</a> at <a href="http://www.cwi.nl/">CWI</a> in 2013.
+			<small>Developed at the <a href="http://www.cwi.nl/research-groups/Database-Architectures">CWI Database Architectures</a> group by <a href="http://hannes.muehleisen.org/">Hannes
+					M&uuml;hleisen</a> in 2013.
 				Powered by <a href="http://www.monetdb.org/">MonetDB</a>, <a
 				href="http://code.shutterstock.com/rickshaw/">Rickshaw</a> and <a
 				href="http://twitter.github.io/bootstrap/">Bootstrap</a>.<br>Data
@@ -111,7 +111,7 @@ form {
 	<script>
 		(function() {
 
-			var callback = "export.php";
+			var callback = "http://homepages.cwi.nl/~hannes/wikistats/proxy.php";
 
 			var palette = new Rickshaw.Color.Palette();
 			var time = new Rickshaw.Fixtures.Time();
@@ -250,16 +250,16 @@ form {
 					success : addData,
 					error : handleError,
 					data : {
-						page : terms.join(",")
+						page : terms.join("|")
 					}
 				});
 			}
 
 			// check if we have been given some url parameters to initialize our graph with
 
-			var seriesp = $.url().param('series')
+			var seriesp = $.url().param('pages')
 			if (seriesp != undefined) {
-				var terms = seriesp.split(",");
+				var terms = seriesp.split("|");
 				addPage(terms);
 			}
 		})();

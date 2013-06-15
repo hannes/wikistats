@@ -19,7 +19,7 @@ if (isset($_REQUEST["callback"]) && !empty($_REQUEST["callback"])) {
 $json = array();
 
 if (isset($_REQUEST['page'])) {
-	$pages = explode(",",$_REQUEST["page"]);
+	$pages = explode("|",$_REQUEST["page"]);
 
 	if (sizeof($pages) < 1) {
 		http_response_code(400);
