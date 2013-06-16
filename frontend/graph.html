@@ -22,35 +22,10 @@ body {
 	padding-top: 60px;
 }
 
-#chart_container {
-	display: inline-block;
-	font-family: Arial, Helvetica, sans-serif;
-}
 
 #chart {
-	float: left;
-}
-
-#legend {
-	float: left;
-	margin-left: 15px;
-}
-
-#page {
-	width: 750px;
-}
-
-#slider {
-	width: 750px;
-}
-
-form {
-	padding-top: 20px;
-}
-
-#chart_container {
 	height: 500px;
-	width: 887px;
+	//width: 887px;
 	background-color: #e9e9e9;
 }
 </style>
@@ -74,26 +49,38 @@ form {
 
 	<div class="container">
 
-		<div id="progress"></div>
-
+		<div class="row">
+		<div class="span3">
 		<form class="form-search">
 			<fieldset>
 				<input id="page" type="text"
 					placeholder="Start typing a page title here…"
-					class="input-medium search-query">
+					class="search-query">
 			</fieldset>
 		</form>
+		</div>
+		<div class="span3">
+			<div id="progress"></div>
+		</div>
+		</div>
 
-
-
-		<div id="chart_container">
-			<div id="chart"></div>
-			<div id="legend"></div>
-			<div id="slider"></div>
+		<div class="row">
+			<div class="span10">
+				<div id="slider"></div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="span10">
+				<div id="chart"></div>
+			</div>
+			<div class="span2">
+				<div id="legend"></div>
+			</div>
 		</div>
 
 
-
+		<div class="row">
+		<div class="span12">
 		<p>
 			<small>Developed at the <a href="http://www.cwi.nl/research-groups/Database-Architectures">CWI Database Architectures</a> group by <a href="http://hannes.muehleisen.org/">Hannes
 					M&uuml;hleisen</a> in 2013.
@@ -106,6 +93,8 @@ form {
 				href="https://github.com/hannesmuehleisen/wikistats">on GitHub</a>.
 			</small>
 		</p>
+		</div>
+		</div>
 	</div>
 
 	<script>
@@ -125,14 +114,11 @@ form {
 			var shelving;
 			var slider;
 
-			var width = 750;
-			var height = 500;
-
 			function initGraph() {
 				graph = new Rickshaw.Graph({
 					element : document.querySelector('#chart'),
-					width : width,
-					height : height,
+					width : $("#chart").width(),
+					height : $("#chart").height(),
 					renderer : 'line',
 					series : data,
 					interpolation : "linear"
@@ -214,14 +200,13 @@ form {
 				});
 
 				var xAxis = new Rickshaw.Graph.Axis.Time({
-					graph : graph,
-					timeUnit : year
+					graph : graph
 				});
 
 				xAxis.render();
 
 				$('#progress').hide();
-				$('#chart_container').css('background-color', '#fff');
+				$('#chart').css('background-color', '#fff');
 				$("#page").prop('disabled', false);
 				$('#page').val('');
 				//graph.configure();
@@ -242,7 +227,7 @@ form {
 
 				$('#progress').text('loading...');
 				$('#progress').show();
-				$('#chart_container').css('background-color', '#e9e9e9');
+				$('#chart').css('background-color', '#e9e9e9');
 
 				$.ajax({
 					url : callback,
