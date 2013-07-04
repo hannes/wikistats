@@ -306,11 +306,6 @@ body {
 					legend : legend
 				});
 
-				/*remover = new Rickshaw.Graph.Behavior.Series.Remove({
-					graph : graph,
-					legend : legend
-				});*/
-
 				var xAxis = new Rickshaw.Graph.Axis.Time({
 					graph : graph
 				});
@@ -373,7 +368,9 @@ body {
 					terms.push(term);
 				}
 				$("#page").prop('disabled', true);
-							$("#chart").empty();
+				if (graph==null) {
+					$("#chart").empty();
+				}
 
 
 				$('#chart').css('background-color', '#e9e9e9');
