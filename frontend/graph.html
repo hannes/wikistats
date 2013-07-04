@@ -390,6 +390,7 @@ body {
 			}
 
 			// check if we have been given some url parameters to initialize our graph with
+			window.location.hash = decodeURIComponent(window.location.hash);
 			var seriesp = window.location.hash;
 			if (seriesp.length > 1) {
 				var terms = seriesp.replace('#', '').split("|");
