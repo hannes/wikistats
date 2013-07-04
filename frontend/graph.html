@@ -133,14 +133,14 @@ body {
 					<ul>
 						
 						
-						<li><a href="http://wikistats.ins.cwi.nl/#Sex|Love|Drugs|Rock_and_roll">Sex, Love, Drugs and Rock'n'roll</a></li>
-						<li><a href="http://wikistats.ins.cwi.nl/#Lady_Gaga|Britney_Spears">Gaga vs. Spears</a></li>
-<li><a href="http://wikistats.ins.cwi.nl/#BMW|Porsche|Mercedes-Benz|Audi|Volkswagen|Opel">German cars shootout</a></li>
-<li><a href="http://wikistats.ins.cwi.nl/#London|Rome|Berlin|Madrid|Paris">European Capitals</a></li>
-<li><a href="http://wikistats.ins.cwi.nl/#Sushi|Overfishing">Sushi vs. Overfishing</a> <small>(by <a href="https://twitter.com/hemasail">@hemasail</a>)</small></li>
-<li><a href="http://wikistats.ins.cwi.nl/#Samsung_Galaxy_S_III|Samsung_Galaxy_S4">Samsung Phones</a> <small>(by <a href="https://twitter.com/hemasail">@hemasail</a>)</small></li>
-<li><a href="http://wikistats.ins.cwi.nl/#Osama_bin_Laden|Muammar_Gaddafi">Osama vs. Muammar</a></li>
-<li><a href="http://wikistats.ins.cwi.nl/#The_Beatles|Jesus">Beatles bigger than Jesus?</a></li>
+						<li><a href="#Sex|Love|Drugs|Rock_and_roll">Sex, Love, Drugs and Rock'n'roll</a></li>
+						<li><a href="#Lady_Gaga|Britney_Spears">Gaga vs. Spears</a></li>
+						<li><a href="#BMW|Porsche|Mercedes-Benz|Audi|Volkswagen|Opel">German cars shootout</a></li>
+						<li><a href="#London|Rome|Berlin|Madrid|Paris">European Capitals</a></li>
+						<li><a href="#Sushi|Overfishing">Sushi vs. Overfishing</a> <small>(by <a href="https://twitter.com/hemasail">@hemasail</a>)</small></li>
+						<li><a href="#Samsung_Galaxy_S_III|Samsung_Galaxy_S4">Samsung Phones</a> <small>(by <a href="https://twitter.com/hemasail">@hemasail</a>)</small></li>
+						<li><a href="#Osama_bin_Laden|Muammar_Gaddafi">Osama vs. Muammar</a></li>
+						<li><a href="#The_Beatles|Jesus">Beatles bigger than Jesus?</a></li>
 
 
 					</ul>
@@ -404,13 +404,15 @@ body {
 				});
 			}
 
-			// check if we have been given some url parameters to initialize our graph with
-			window.location.hash = decodeURIComponent(window.location.hash);
-			var seriesp = window.location.hash;
-			if (seriesp.length > 1) {
-				var terms = seriesp.replace('#', '').split("|");
-				addPage(terms);
+			window.onhashchange = function() {
+				window.location.hash = decodeURIComponent(window.location.hash);
+				seriesp = window.location.hash;
+				if (seriesp.length > 1) {
+					var terms = seriesp.replace('#', '').split("|");
+					addPage(terms);
+				}
 			}
+			
 		})();
 	</script>
 
