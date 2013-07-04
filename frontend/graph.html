@@ -15,6 +15,7 @@
 <script src="js/jquery-ui.min.js"></script>
 <script src="js/purl.js"></script>
 <script src="js/rickshaw.min.js"></script>
+<script src="js/series.remover.js"></script>
 
 
 <style>
@@ -22,11 +23,15 @@ body {
 	padding-top: 60px;
 }
 
-
 #chart {
-	height: 500px;
-	//width: 887px;
+	height: 500px; //
+	width: 887px;
 	background-color: #e9e9e9;
+}
+
+#footer {
+	font-size: -10%;
+	margin-top: 30px;
 }
 </style>
 
@@ -48,20 +53,31 @@ body {
 	</div>
 
 	<div class="container">
-
-		<div class="row">
-		<div class="span3">
-		<form class="form-search">
-			<fieldset>
-				<input id="page" type="text"
-					placeholder="Start typing a page title here…"
-					class="search-query">
-			</fieldset>
-		</form>
-		</div>
-		<div class="span3">
-			<div id="progress"></div>
-		</div>
+		<noscript>
+			<div class="row">
+				<div class="span12"
+					style="padding: 5px 3px 10px 10px; border: 2px solid red;">
+					<p>
+						This application requires <a
+							ref="http://en.wikipedia.org/wiki/JavaScript">JavaScript</a>.
+						Please...
+					</p>
+				</div>
+			</div>
+		</noscript>
+		<div class="row" id="searchbar">
+			<div class="span3">
+				<form class="form-search">
+					<fieldset>
+						<input id="page" type="text"
+							placeholder="Start typing a page title here…"
+							class="search-query">
+					</fieldset>
+				</form>
+			</div>
+			<div class="span3">
+				<div id="progress"></div>
+			</div>
 		</div>
 
 		<div class="row">
@@ -79,28 +95,30 @@ body {
 		</div>
 
 
-		<div class="row">
-		<div class="span12">
-		<p>
-			<small>Developed at the <a href="http://www.cwi.nl/research-groups/Database-Architectures">CWI Database Architectures</a> group by <a href="http://hannes.muehleisen.org/">Hannes
-					M&uuml;hleisen</a> in 2013.
-				Powered by <a href="http://www.monetdb.org/">MonetDB</a>, <a
-				href="http://code.shutterstock.com/rickshaw/">Rickshaw</a> and <a
-				href="http://twitter.github.io/bootstrap/">Bootstrap</a>.<br>Data
-				taken from the <a
-				href="http://dumps.wikimedia.org/other/pagecounts-raw/">Page
-					view statistics for Wikimedia projects</a>. Code is <a
-				href="https://github.com/hannesmuehleisen/wikistats">on GitHub</a>.
-			</small>
-		</p>
-		</div>
+		<div class="row" id="footer">
+			<div class="span12">
+				<p>
+					<small>Developed at the <a
+						href="http://www.cwi.nl/research-groups/Database-Architectures">CWI
+							Database Architectures</a> group by <a
+						href="http://hannes.muehleisen.org/">Hannes M&uuml;hleisen</a> in
+						2013. Powered by <a href="http://www.monetdb.org/">MonetDB</a>, <a
+						href="http://code.shutterstock.com/rickshaw/">Rickshaw</a> and <a
+						href="http://twitter.github.io/bootstrap/">Bootstrap</a>.<br>Data
+						taken from the <a
+						href="http://dumps.wikimedia.org/other/pagecounts-raw/">Page
+							view statistics for Wikimedia projects</a>. Code is <a
+						href="https://github.com/hannesmuehleisen/wikistats">on GitHub</a>.
+					</small>
+				</p>
+			</div>
 		</div>
 	</div>
 
 	<script>
 		(function() {
 
-			var callback = "http://homepages.cwi.nl/~hannes/wikistats/proxy.php";
+			var callback = "http://wikistats.ins.cwi.nl/export.php";
 
 			var palette = new Rickshaw.Color.Palette();
 			var time = new Rickshaw.Fixtures.Time();
@@ -111,7 +129,7 @@ body {
 			var graph = null;
 			var legend = null;
 			var highlighter;
-			var shelving;
+			var remover;
 			var slider;
 
 			function initGraph() {
@@ -194,7 +212,7 @@ body {
 					legend : legend
 				});
 
-				shelving = new Rickshaw.Graph.Behavior.Series.Toggle({
+				remover = new Rickshaw.Graph.Behavior.Series.Remove({
 					graph : graph,
 					legend : legend
 				});
@@ -246,6 +264,7 @@ body {
 			if (seriesp != undefined) {
 				var terms = seriesp.split("|");
 				addPage(terms);
+				$('#searchbar').hide();
 			}
 		})();
 	</script>
