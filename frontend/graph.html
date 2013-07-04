@@ -26,19 +26,14 @@
 <script src="js/bootstrap.min.js"></script>
 
 
-<script type="text/javascript">
-	var switchTo5x = true;
-</script>
 <script type="text/javascript"
 	src="http://w.sharethis.com/button/buttons.js"></script>
 <script type="text/javascript">
 	stLight.options({
 		publisher : "ur-74a15812-3d58-4200-d949-339dfcd927ef",
-		doNotHash : true,
-		doNotCopy : true,
-		hashAddressBar : false
 	});
 </script>
+
 
 
 <style>
@@ -158,11 +153,11 @@ body {
 					<button class="btn btn-mini dropdown-toggle" data-toggle="dropdown">
 						share <i class="icon-share"></i>
 					</button>
-					<ul class="dropdown-menu" id="share-entries">
-						<li><span class="st_facebook sharer" displayText="Facebook"></span></li>
-						<li><span class="st_twitter sharer" displayText="Tweet"></span></li>
-						<li><span class="st_googleplus sharer" displayText="Google +"></span></li>
-						<li><span class="st_linkedin sharer" displayText="LinkedIn"></span></li>
+					<ul class="dropdown-menu">
+						<li><a id="share-twitter" href=""><img
+								src="img/twitter_16.png" /> Twitter</a></li>
+						<li><a id="share-facebook" href=""><img
+								src="img/facebook_16.png" /> Facebook</span></a></li>
 					</ul>
 				</div>
 
@@ -346,20 +341,30 @@ body {
 							window.location.hash += '|' + d.key;
 
 					}
-					if (document.title.search("@") == -1) {
-						document.title = d.name + ' @ ' + document.title;
+					if (document.title.search("-") == -1) {
+						document.title = d.name + ' - ' + document.title;
 					} else {
 						document.title = d.name + ' vs. ' + document.title;
 					}
-
 				});
 
-				$('#share-entries .sharer').empty();
-				$('#share-entries .sharer').attr('st_processed', null);
-				$('#share-entries .sharer').attr('st_title', document.title);
-				$('#share-entries .sharer').attr('st_url', window.location);
-				stButtons.makeButtons();
-				
+				$('#share-facebook')
+						.attr(
+								'href',
+								'https://www.facebook.com/sharer/sharer.php?u='
+										+ encodeURIComponent(window.location
+												.toString())).attr('target',
+								'_new');
+
+				$('#share-twitter')
+						.attr(
+								'href',
+								'https://twitter.com/share?url='
+										+ encodeURIComponent(window.location
+												.toString())
+										+ '&via=hfmuehleisen&hashtags=wikistats&text='
+										+ encodeURIComponent(document.title))
+						.attr('target', '_new');
 			}
 
 			function handleError(err) {
