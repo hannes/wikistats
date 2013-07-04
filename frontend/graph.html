@@ -2,7 +2,14 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+
 <title>Wikipedia Page Views</title>
+
+<meta property="og:title" content="Wikipedia Page Views" />
+<meta property="og:url" content="http://wikistats.ins.cwi.nl" />
+<meta property="og:description" content="Wikipedia weekly page views" />
+
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="css/bootstrap.min.css" rel="stylesheet">
 <link type="text/css" rel="stylesheet" href="css/rickshaw.min.css">
@@ -12,10 +19,26 @@
 
 <script src="js/d3.min.js"></script>
 <script src="js/jquery.min.js"></script>
+
 <script src="js/jquery-ui.min.js"></script>
 <script src="js/purl.js"></script>
 <script src="js/rickshaw.min.js"></script>
-<script src="js/series.remover.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
+
+<script type="text/javascript">
+	var switchTo5x = true;
+</script>
+<script type="text/javascript"
+	src="http://w.sharethis.com/button/buttons.js"></script>
+<script type="text/javascript">
+	stLight.options({
+		publisher : "ur-74a15812-3d58-4200-d949-339dfcd927ef",
+		doNotHash : true,
+		doNotCopy : true,
+		hashAddressBar : false
+	});
+</script>
 
 
 <style>
@@ -111,9 +134,9 @@ body {
 				<div class="span12"
 					style="padding: 5px 3px 10px 10px; border: 2px solid red;">
 					<p>
-						This application requires <a
-							ref="http://en.wikipedia.org/wiki/JavaScript">JavaScript</a>.
-						Please...
+						This application absolutely requires <a
+							ref="http://en.wikipedia.org/wiki/JavaScript">JavaScript</a> to
+						be enabled. Please...
 					</p>
 				</div>
 			</div>
@@ -125,13 +148,23 @@ body {
 			</div>
 			<div class="span2">
 				<div id="legend"></div>
-				<button id="share" class="btn-small btn btn-primary">
-					<i class="icon-share icon-white"></i>
-				</button>
-				<button id="startover" class="btn-small btn btn-danger">
-					<i class="icon-remove icon-white"></i>
-				</button>
 
+				<br>
+
+				<div id="share" class="btn-group">
+					<button id="startover" class="btn btn-mini">
+						<i class="icon-remove"></i> restart
+					</button>
+					<button class="btn btn-mini dropdown-toggle" data-toggle="dropdown">
+						share <i class="icon-share"></i>
+					</button>
+					<ul class="dropdown-menu" id="share-entries">
+						<li><span class="st_facebook sharer" displayText="Facebook"></span></li>
+						<li><span class="st_twitter sharer" displayText="Tweet"></span></li>
+						<li><span class="st_googleplus sharer" displayText="Google +"></span></li>
+						<li><span class="st_linkedin sharer" displayText="LinkedIn"></span></li>
+					</ul>
+				</div>
 
 			</div>
 		</div>
@@ -242,9 +275,13 @@ body {
 				$('#smoother').slider("destroy");
 
 				graph = null;
+				data = [];
+
 				$('#startover').hide();
 				$('#share').hide();
 
+				window.location.hash = '';
+				document.title = 'Wikipedia Page Views';
 				$('#chart').css('background-color', '#e9e9e9');
 			});
 
@@ -254,6 +291,7 @@ body {
 			function addData(series) {
 				$.each(series, function(i, d) {
 					d.color = palette.color();
+					d.key = d.name;
 					d.name = d.name.replace(/_/g, ' ');
 					data.push(d);
 				});
@@ -298,10 +336,30 @@ body {
 				$("#page").prop('disabled', false);
 				$('#page').val('');
 				$('#startover').show();
-				//$('#share').show();
+				$('#share').show();
 
-				//graph.configure();
+				$.each(series, function(i, d) {
+					if (window.location.hash.length < 2) {
+						window.location.hash = '#' + d.key;
+					} else {
+						if (window.location.hash.search(d.key) == -1)
+							window.location.hash += '|' + d.key;
 
+					}
+					if (document.title.search("@") == -1) {
+						document.title = d.name + ' @ ' + document.title;
+					} else {
+						document.title = d.name + ' vs. ' + document.title;
+					}
+
+				});
+
+				$('#share-entries .sharer').empty();
+				$('#share-entries .sharer').attr('st_processed', null);
+				$('#share-entries .sharer').attr('st_title', document.title);
+				$('#share-entries .sharer').attr('st_url', window.location);
+				stButtons.makeButtons();
+				
 			}
 
 			function handleError(err) {
@@ -330,10 +388,9 @@ body {
 			}
 
 			// check if we have been given some url parameters to initialize our graph with
-
-			var seriesp = $.url().param('pages')
-			if (seriesp != undefined) {
-				var terms = seriesp.split("|");
+			var seriesp = window.location.hash;
+			if (seriesp.length > 1) {
+				var terms = seriesp.replace('#', '').split("|");
 				addPage(terms);
 			}
 		})();
