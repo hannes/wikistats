@@ -33,21 +33,74 @@ body {
 	font-size: -10%;
 	margin-top: 30px;
 }
+
+.brand {
+	color: white;
+}
+
+.logos {
+	text-align: right;
+}
+
+#legend {
+	background-color: white;
+	color: black;
+}
+
+.info a {
+	text-decoration: underline;
+}
+
+.info {
+	text-align: justify
+}
+
+#smoother {
+	margin: 0 0 10px 16px;
+	width: 100px;
+}
+
+#smoother .ui-slider-horizontal {
+	height: 1px !important;
+	border-color: #e0e0e0;
+	margin-bottom: 10px;
+}
+
+#smoother .ui-slider-handle {
+	border-color: #a0a0a0;
+	height: 9px !important;
+	width: 9px !important;
+	top: -5px !important;
+	border-radius: 6px;
+	outline: none;
+	cursor: pointer;
+}
+
+#slider {
+	height: 14px;
+}
 </style>
 
 </head>
 
 <body>
 
-	<div class="navbar navbar-inverse navbar-fixed-top">
+	<div class="navbar navbar-fixed-top">
 		<div class="navbar-inner">
 			<div class="container">
-				<button type="button" class="btn btn-navbar" data-toggle="collapse"
-					data-target=".nav-collapse">
-					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
-						class="icon-bar"></span>
-				</button>
-				<a class="brand" href="#">Wikipedia Page Views</a>
+				<span class="brand">Wikipedia Page Views</span>
+
+				<form class="navbar-search pull-left">
+					<input id="page" type="text"
+						placeholder="Start typing a page title here…" class="search-query">
+				</form>
+
+
+				<div class="logos">
+					<a href="http://www.monetdb.org"><img src="img/monetdb.png" /></a>&nbsp;<a
+						href="http://www.cwi.nl/research-groups/Database-Architectures"><img
+						src="img/cwi.png" /></a>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -65,48 +118,45 @@ body {
 				</div>
 			</div>
 		</noscript>
-		<div class="row" id="searchbar">
-			<div class="span3">
-				<form class="form-search">
-					<fieldset>
-						<input id="page" type="text"
-							placeholder="Start typing a page title here…"
-							class="search-query">
-					</fieldset>
-				</form>
-			</div>
-			<div class="span3">
-				<div id="progress"></div>
-			</div>
-		</div>
 
-		<div class="row">
-			<div class="span10">
-				<div id="slider"></div>
-			</div>
-		</div>
 		<div class="row">
 			<div class="span10">
 				<div id="chart"></div>
 			</div>
 			<div class="span2">
 				<div id="legend"></div>
+				<button id="share" class="btn-small btn btn-primary">
+					<i class="icon-share icon-white"></i>
+				</button>
+				<button id="startover" class="btn-small btn btn-danger">
+					<i class="icon-remove icon-white"></i>
+				</button>
+
+
+			</div>
+		</div>
+		<div class="row">
+			<div class="span10">
+				<div id="slider"></div>
 			</div>
 		</div>
 
-
 		<div class="row" id="footer">
-			<div class="span12">
-				<p>
-					<small>Developed at the <a
+			<div class="span10">
+				<p class="info">
+					<small>This graph shows weekly absolute page views for
+						Wikipedia pages selected by <em>you</em>. The visualisation was
+						developed at the <a
 						href="http://www.cwi.nl/research-groups/Database-Architectures">CWI
 							Database Architectures</a> group by <a
 						href="http://hannes.muehleisen.org/">Hannes M&uuml;hleisen</a> in
-						2013. Powered by <a href="http://www.monetdb.org/">MonetDB</a>, <a
+						2013. Database contains 41.775.815 measurements from 688.444 pages
+						between 2008 and mid-2013. Powered by <a
+						href="http://www.monetdb.org/">MonetDB</a>, <a
 						href="http://code.shutterstock.com/rickshaw/">Rickshaw</a> and <a
-						href="http://twitter.github.io/bootstrap/">Bootstrap</a>.<br>Data
-						taken from the <a
-						href="http://dumps.wikimedia.org/other/pagecounts-raw/">Page
+						href="http://twitter.github.io/bootstrap/">Bootstrap</a>. Icons by
+						<a href="http://glyphicons.com/">Glyphicons</a>. Data taken from
+						the <a href="http://dumps.wikimedia.org/other/pagecounts-raw/">Page
 							view statistics for Wikimedia projects</a>. Code is <a
 						href="https://github.com/hannesmuehleisen/wikistats">on GitHub</a>.
 					</small>
@@ -160,7 +210,7 @@ body {
 
 			}
 
-			$("#page").autocomplete({
+			$('#page').autocomplete({
 				source : function(request, response) {
 					$.ajax({
 						url : callback,
@@ -184,6 +234,22 @@ body {
 					this.value = "";
 				},
 			});
+
+			$('#startover').click(function() {
+				$('#chart').empty();
+				$('#legend').empty();
+				$('#slider').slider("destroy");
+				$('#smoother').slider("destroy");
+
+				graph = null;
+				$('#startover').hide();
+				$('#share').hide();
+
+				$('#chart').css('background-color', '#e9e9e9');
+			});
+
+			$('#startover').hide();
+			$('#share').hide();
 
 			function addData(series) {
 				$.each(series, function(i, d) {
@@ -212,21 +278,28 @@ body {
 					legend : legend
 				});
 
-				remover = new Rickshaw.Graph.Behavior.Series.Remove({
+				/*remover = new Rickshaw.Graph.Behavior.Series.Remove({
 					graph : graph,
 					legend : legend
-				});
+				});*/
 
 				var xAxis = new Rickshaw.Graph.Axis.Time({
 					graph : graph
 				});
 
+				var smoother = new Rickshaw.Graph.Smoother({
+					graph : graph,
+					element : $('#smoother')
+				});
+
 				xAxis.render();
 
-				$('#progress').hide();
 				$('#chart').css('background-color', '#fff');
 				$("#page").prop('disabled', false);
 				$('#page').val('');
+				$('#startover').show();
+				//$('#share').show();
+
 				//graph.configure();
 
 			}
@@ -243,8 +316,6 @@ body {
 				}
 				$("#page").prop('disabled', true);
 
-				$('#progress').text('loading...');
-				$('#progress').show();
 				$('#chart').css('background-color', '#e9e9e9');
 
 				$.ajax({
@@ -264,7 +335,6 @@ body {
 			if (seriesp != undefined) {
 				var terms = seriesp.split("|");
 				addPage(terms);
-				$('#searchbar').hide();
 			}
 		})();
 	</script>
