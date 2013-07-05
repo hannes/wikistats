@@ -367,7 +367,7 @@ body {
 				$('#startover').show();
 				$('#share').show();
 
-				graph.changingHash = true;
+				window.changingHash = true;
 				
 				$.each(series, function(i, d) {
 					if (window.location.hash.length < 2) {
@@ -387,7 +387,7 @@ body {
 
 				});
 		        
-				setTimeout(function() { graph.changingHash = false;}, 500);
+				setTimeout(function() { window.changingHash = false;}, 500);
 
 
 				$('#share-facebook')
@@ -438,9 +438,13 @@ body {
 			}
 			
 			$(window).on( 'hashchange', function(e) {
-				if (graph != null && graph.changingHash) {
+				console.log(1);
+				if (window.changingHash) {
 					return;
 				}
+				console.log(1);
+				window.changingHash = true;
+				console.log(3);
 				window.location.hash = decodeURIComponent(window.location.hash);
 				seriesp = window.location.hash;
 				if (seriesp.length > 1) {
