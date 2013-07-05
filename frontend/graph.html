@@ -438,14 +438,13 @@ body {
 			}
 			
 			$(window).on( 'hashchange', function(e) {
-				console.log(1);
 				if (window.changingHash) {
 					return;
 				}
-				console.log(1);
 				window.changingHash = true;
-				console.log(3);
 				window.location.hash = decodeURIComponent(window.location.hash);
+				window.changingHash = false;
+
 				seriesp = window.location.hash;
 				if (seriesp.length > 1) {
 					var terms = seriesp.replace('#', '').split("|");
