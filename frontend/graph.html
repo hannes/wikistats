@@ -86,6 +86,21 @@ body {
 #slider {
 	height: 14px;
 }
+
+#print-title, #print-url {
+	display:none;
+}
+
+@media print {
+  .hidden-print   { display: none !important; }
+  a[href]:after {
+    content: none;
+  }
+  #print-title, #print-url {
+  	display:inherit;
+  }
+}
+
 </style>
 
 </head>
@@ -95,9 +110,9 @@ body {
 	<div class="navbar navbar-fixed-top">
 		<div class="navbar-inner">
 			<div class="container">
-				<span class="brand">Wikipedia Page Views</span>
-
-				<form class="navbar-search pull-left">
+				<span class="brand hidden-print">Wikipedia Page Views</span>
+				<h3 class="brand"id="print-title"></h3>
+				<form class="navbar-search pull-left hidden-print">
 					<input id="page" type="text"
 						placeholder="Start typing a page title here…" class="search-query">
 				</form>
@@ -149,11 +164,11 @@ body {
 				</div>
 			</div>
 			<div class="span2">
-				<div id="legend"></div>
+				<div id="legend" class="hidden-print"></div>
 
 				<br>
 
-				<div id="share" class="btn-group">
+				<div id="share" class="btn-group hidden-print">
 					<button id="startover" class="btn btn-mini">
 						<i class="icon-remove"></i> restart
 					</button>
@@ -170,15 +185,16 @@ body {
 
 			</div>
 		</div>
-		<div class="row">
+		<div class="row hidden-print">
 			<div class="span10">
 				<div id="slider"></div>
 			</div>
 		</div>
-
+		
 		<div class="row" id="footer">
 			<div class="span10">
-				<p class="info">
+				<p class="info" id="print-url"></p>
+				<p class="info hidden-print">
 					<small>This graph shows weekly absolute page views for
 						Wikipedia pages selected by <em>you</em>. Database contains 41.775.815 measurements from 688.444 pages
 						between 2008 and mid-2013. The visualisation was
@@ -355,6 +371,9 @@ body {
 					} else {
 						document.title = d.name + ' vs. ' + document.title;
 					}
+					$('#print-title').text(document.title);
+					$('#print-url').text(window.location.toString());
+
 				});
 
 				$('#share-facebook')
