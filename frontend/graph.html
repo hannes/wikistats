@@ -87,20 +87,21 @@ body {
 	height: 14px;
 }
 
-#print-title, #print-url {
-	display:none;
+#print-title,#print-url {
+	display: none;
 }
 
 @media print {
-  .hidden-print   { display: none !important; }
-  a[href]:after {
-    content: none;
-  }
-  #print-title, #print-url {
-  	display:inherit;
-  }
+	.hidden-print {
+		display: none !important;
+	}
+	a[href]:after {
+		content: none;
+	}
+	#print-title,#print-url {
+		display: inherit;
+	}
 }
-
 </style>
 
 </head>
@@ -111,7 +112,7 @@ body {
 		<div class="navbar-inner">
 			<div class="container">
 				<span class="brand hidden-print">Wikipedia Page Views</span>
-				<h3 class="brand"id="print-title"></h3>
+				<h3 class="brand" id="print-title"></h3>
 				<form class="navbar-search pull-left hidden-print">
 					<input id="page" type="text"
 						placeholder="Start typing a page title here…" class="search-query">
@@ -131,9 +132,9 @@ body {
 		<noscript>
 			<div class="row">
 				<div class="alert alert-warning">
-						This application absolutely requires <a
-							ref="http://en.wikipedia.org/wiki/JavaScript">JavaScript</a> to
-						be enabled. Please...
+					This application absolutely requires <a
+						ref="http://en.wikipedia.org/wiki/JavaScript">JavaScript</a> to be
+					enabled. Please...
 				</div>
 			</div>
 		</noscript>
@@ -141,22 +142,31 @@ body {
 		<div class="row">
 			<div class="span10">
 				<div id="chart">
-					<div class="alert alert-info">Start by typing a Wikipedia page name in search box above and wait for suggestions.</div>
-					
+					<div class="alert alert-info">Start by typing a Wikipedia
+						page name in search box above and wait for suggestions.</div>
+
 					<h4>Some Examples</h4>
-					
 					<ul>
-						
-						
-						<li><a href="#Sex|Love|Drugs|Rock_and_roll">Sex, Love, Drugs and Rock'n'roll</a></li>
+						<li><a href="#Sex|Love|Drugs|Rock_and_roll">Sex, Love,
+								Drugs and Rock'n'roll</a></li>
 						<li><a href="#Lady_Gaga|Britney_Spears">Gaga vs. Spears</a></li>
-						<li><a href="#BMW|Porsche|Mercedes-Benz|Audi|Volkswagen|Opel">German cars shootout</a></li>
-						<li><a href="#London|Rome|Berlin|Madrid|Paris">European Capitals</a></li>
-						<li><a href="#Sushi|Overfishing">Sushi vs. Overfishing</a> <small>(by <a href="https://twitter.com/hemasail">@hemasail</a>)</small></li>
-						<li><a href="#Samsung_Galaxy_S_III|Samsung_Galaxy_S4|Samsung_Galaxy_S_II">Samsung Phones</a> <small>(by <a href="https://twitter.com/hemasail">@hemasail</a>)</small></li>
-						<li><a href="#Osama_bin_Laden|Muammar_Gaddafi">Osama vs. Muammar</a></li>
-						<li><a href="#The_Beatles|Jesus">Beatles bigger than Jesus?</a></li>
-						<li><a href="#Santa_Claus|Easter_Bunny">Santa Claus vs. Easter Bunny</a></li>
+						<li><a href="#BMW|Porsche|Mercedes-Benz|Audi|Volkswagen|Opel">German
+								cars shootout</a></li>
+						<li><a href="#London|Rome|Berlin|Madrid|Paris">European
+								Capitals</a></li>
+						<li><a href="#Sushi|Overfishing">Sushi vs. Overfishing</a> <small>(by
+								<a href="https://twitter.com/hemasail">@hemasail</a>)
+						</small></li>
+						<li><a
+							href="#Samsung_Galaxy_S_III|Samsung_Galaxy_S4|Samsung_Galaxy_S_II">Samsung
+								Phones</a> <small>(by <a href="https://twitter.com/hemasail">@hemasail</a>)
+						</small></li>
+						<li><a href="#Osama_bin_Laden|Muammar_Gaddafi">Osama vs.
+								Muammar</a></li>
+						<li><a href="#The_Beatles|Jesus">Beatles bigger than
+								Jesus?</a></li>
+						<li><a href="#Santa_Claus|Easter_Bunny">Santa Claus vs.
+								Easter Bunny</a></li>
 
 
 					</ul>
@@ -196,14 +206,13 @@ body {
 				<p class="info" id="print-url"></p>
 				<p class="info hidden-print">
 					<small>This graph shows weekly absolute page views for
-						Wikipedia pages selected by <em>you</em>. Database contains 41.775.815 measurements from 688.444 pages
-						between 2008 and mid-2013. The visualisation was
-						developed at the <a
+						Wikipedia pages selected by <em>you</em>. Database contains
+						41.775.815 measurements from 688.444 pages between 2008 and
+						mid-2013. The visualisation was developed at the <a
 						href="http://www.cwi.nl/research-groups/Database-Architectures">CWI
 							Database Architectures</a> group by <a
 						href="http://hannes.muehleisen.org/">Hannes M&uuml;hleisen</a> in
-						2013.  Powered by <a
-						href="http://www.monetdb.org/">MonetDB</a>, <a
+						2013. Powered by <a href="http://www.monetdb.org/">MonetDB</a>, <a
 						href="http://code.shutterstock.com/rickshaw/">Rickshaw</a> and <a
 						href="http://twitter.github.io/bootstrap/">Bootstrap</a>. Icons by
 						<a href="http://glyphicons.com/">Glyphicons</a>. Data taken from
@@ -285,10 +294,10 @@ body {
 					addPage(ui.item.value);
 					this.value = "";
 				},
-			}).keydown(function(e){
-				if (e.keyCode === 13){
-				$("#page").trigger('submit');
-								return false;
+			}).keydown(function(e) {
+				if (e.keyCode === 13) {
+					$("#page").trigger('submit');
+					return false;
 
 				}
 			});
@@ -358,6 +367,8 @@ body {
 				$('#startover').show();
 				$('#share').show();
 
+				graph.changingHash = true;
+				
 				$.each(series, function(i, d) {
 					if (window.location.hash.length < 2) {
 						window.location.hash = '#' + d.key;
@@ -375,6 +386,9 @@ body {
 					$('#print-url').text(window.location.toString());
 
 				});
+		        
+				setTimeout(function() { graph.changingHash = false;}, 500);
+
 
 				$('#share-facebook')
 						.attr(
@@ -406,10 +420,9 @@ body {
 					terms.push(term);
 				}
 				$("#page").prop('disabled', true);
-				if (graph==null) {
+				if (graph == null) {
 					$("#chart").empty();
 				}
-
 
 				$('#chart').css('background-color', '#e9e9e9');
 
@@ -423,17 +436,21 @@ body {
 					}
 				});
 			}
-
-			window.onhashchange = function() {
+			
+			$(window).on( 'hashchange', function(e) {
+				if (graph != null && graph.changingHash) {
+					return;
+				}
 				window.location.hash = decodeURIComponent(window.location.hash);
 				seriesp = window.location.hash;
 				if (seriesp.length > 1) {
 					var terms = seriesp.replace('#', '').split("|");
 					addPage(terms);
 				}
-			}
-			window.onhashchange();
+			});
 			
+			$(window).trigger( 'hashchange');
+
 		})();
 	</script>
 
