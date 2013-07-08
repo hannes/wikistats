@@ -1,6 +1,6 @@
 <?php
 require 'phplib/php_monetdb.php';
-$db = monetdb_connect("sql","bristol.ins.cwi.nl",50000,"monetdb","monetdb","wikistats") or trigger_error(monetdb_last_error());
+$db = monetdb_connect("sql","localhost",50000,"monetdb","monetdb","wikistats") or trigger_error(monetdb_last_error());
 
 $hasJsonp = false;
 $jsonp = "";
