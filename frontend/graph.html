@@ -1,109 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
+	<meta charset="utf-8">
 
-<title>Wikipedia Page Views</title>
+	<title>Wikipedia Page Views</title>
 
-<meta property="og:title" content="Wikipedia Page Views" />
-<meta property="og:url" content="http://wikistats.ins.cwi.nl" />
-<meta property="og:description" content="Wikipedia weekly page views" />
+	<meta property="og:title" content="Wikipedia Page Views" />
+	<meta property="og:url" content="http://wikistats.ins.cwi.nl" />
+	<meta property="og:description" content="Wikipedia weekly page views" />
 
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="css/bootstrap.min.css" rel="stylesheet">
-<link type="text/css" rel="stylesheet" href="css/rickshaw.min.css">
-<link type="text/css" rel="stylesheet" href="css/jquery-ui.min.css">
-<link rel="shortcut icon"
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link type="text/css" rel="stylesheet" href="css/rickshaw.min.css">
+	<link type="text/css" rel="stylesheet" href="css/jquery-ui.min.css">
+	<link rel="shortcut icon"
 	href="http://bits.wikimedia.org/favicon/wikipedia.ico" />
 
-<script src="js/d3.min.js"></script>
-<script src="js/jquery.min.js"></script>
+	<script src="js/d3.min.js"></script>
+	<script src="js/jquery.min.js"></script>
 
-<script src="js/jquery-ui.min.js"></script>
-<script src="js/purl.js"></script>
-<script src="js/rickshaw.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
+	<script src="js/jquery-ui.min.js"></script>
+	<script src="js/purl.js"></script>
+	<script src="js/rickshaw.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
 
 
-<style>
-body {
-	padding-top: 60px;
-}
-
-#chart {
-	height: 500px; //
-	width: 887px;
-}
-
-#footer {
-	font-size: -10%;
-	margin-top: 30px;
-}
-
-.brand {
-	color: white;
-}
-
-.logos {
-	text-align: right;
-}
-
-#legend {
-	background-color: white;
-	color: black;
-}
-
-.info a {
-	text-decoration: underline;
-}
-
-.info {
-	text-align: justify
-}
-
-#smoother {
-	margin: 0 0 10px 16px;
-	width: 100px;
-}
-
-#smoother .ui-slider-horizontal {
-	height: 1px !important;
-	border-color: #e0e0e0;
-	margin-bottom: 10px;
-}
-
-#smoother .ui-slider-handle {
-	border-color: #a0a0a0;
-	height: 9px !important;
-	width: 9px !important;
-	top: -5px !important;
-	border-radius: 6px;
-	outline: none;
-	cursor: pointer;
-}
-
-#slider {
-	margin-top: 10px;
-	height: 10px;
-}
-
-#print-title,#print-url {
-	display: none;
-}
-
-@media print {
-	.hidden-print {
-		display: none !important;
+	<style>
+	body {
+		padding-top: 60px;
 	}
-	a[href]:after {
-		content: none;
+
+	#chart {
+		height: 500px; //
+		width: 887px;
 	}
+
+	#footer {
+		font-size: -10%;
+		margin-top: 30px;
+	}
+
+	.brand {
+		color: white;
+	}
+
+	.logos {
+		text-align: right;
+	}
+
+	#legend {
+		background-color: white;
+		color: black;
+	}
+
+	.info a {
+		text-decoration: underline;
+	}
+
+	.info {
+		text-align: justify
+	}
+
+	#smoother {
+		margin: 0 0 10px 16px;
+		width: 100px;
+	}
+
+	#smoother .ui-slider-horizontal {
+		height: 1px !important;
+		border-color: #e0e0e0;
+		margin-bottom: 10px;
+	}
+
+	#smoother .ui-slider-handle {
+		border-color: #a0a0a0;
+		height: 9px !important;
+		width: 9px !important;
+		top: -5px !important;
+		border-radius: 6px;
+		outline: none;
+		cursor: pointer;
+	}
+
+	#slider {
+		margin-top: 10px;
+		height: 10px;
+	}
+
 	#print-title,#print-url {
-		display: inherit;
+		display: none;
 	}
-}
-</style>
+
+	@media print {
+		.hidden-print {
+			display: none !important;
+		}
+		a[href]:after {
+			content: none;
+		}
+		#print-title,#print-url {
+			display: inherit;
+		}
+	}
+	</style>
 
 </head>
 
@@ -116,14 +116,14 @@ body {
 				<h3 class="brand" id="print-title"></h3>
 				<form class="navbar-search pull-left hidden-print">
 					<input id="page" type="text"
-						placeholder="Start typing a page title here…" class="search-query">
+					placeholder="Start typing a page title here…" class="search-query">
 				</form>
 
 
 				<div class="logos">
 					<a href="http://www.monetdb.org"><img src="img/monetdb.png" /></a>&nbsp;<a
-						href="http://www.cwi.nl/research-groups/Database-Architectures"><img
-						src="img/cwi.png" /></a>
+					href="http://www.cwi.nl/research-groups/Database-Architectures"><img
+					src="img/cwi.png" /></a>
 				</div>
 			</div>
 		</div>
@@ -134,7 +134,7 @@ body {
 			<div class="row">
 				<div class="alert alert-warning">
 					This application absolutely requires <a
-						ref="http://en.wikipedia.org/wiki/JavaScript">JavaScript</a> to be
+					ref="http://en.wikipedia.org/wiki/JavaScript">JavaScript</a> to be
 					enabled. Please...
 				</div>
 			</div>
@@ -146,195 +146,209 @@ body {
 					<div class="alert alert-info">Start by typing a Wikipedia
 						page name in search box above and wait for suggestions.</div>
 
-					<h4>Some Examples</h4>
-					<ul>
-						<li><a href="#Sex|Love|Drugs|Rock_and_roll">Sex, Love,
+						<h4>Some Examples</h4>
+						<ul>
+							<li><a href="#Sex|Love|Drugs|Rock_and_roll">Sex, Love,
 								Drugs and Rock'n'roll</a></li>
-						<li><a href="#Lady_Gaga|Britney_Spears">Gaga vs. Spears</a></li>
-						<li><a href="#BMW|Porsche|Mercedes-Benz|Audi|Volkswagen|Opel">German
-								cars shootout</a></li>
-						<li><a href="#London|Rome|Berlin|Madrid|Paris">European
-								Capitals</a></li>
-						<li><a href="#Sushi|Overfishing">Sushi vs. Overfishing</a> <small>(by
-								<a href="https://twitter.com/hemasail">@hemasail</a>)
-						</small></li>
-						<li><a
-							href="#Samsung_Galaxy_S_III|Samsung_Galaxy_S4|Samsung_Galaxy_S_II">Samsung
-								Phones</a> <small>(by <a href="https://twitter.com/hemasail">@hemasail</a>)
-						</small></li>
-						<li><a href="#Osama_bin_Laden|Muammar_Gaddafi">Osama vs.
-								Muammar</a></li>
-						<li><a href="#The_Beatles|Jesus">Beatles bigger than
-								Jesus?</a></li>
-						<li><a href="#Santa_Claus|Easter_Bunny">Santa Claus vs.
-								Easter Bunny</a></li>
+								<li><a href="#Lady_Gaga|Britney_Spears">Gaga vs. Spears</a></li>
+								<li><a href="#BMW|Porsche|Mercedes-Benz|Audi|Volkswagen|Opel">German
+									cars shootout</a></li>
+									<li><a href="#London|Rome|Berlin|Madrid|Paris">European
+										Capitals</a></li>
+										<li><a href="#Sushi|Overfishing">Sushi vs. Overfishing</a> <small>(by
+											<a href="https://twitter.com/hemasail">@hemasail</a>)
+										</small></li>
+										<li><a
+											href="#Samsung_Galaxy_S_III|Samsung_Galaxy_S4|Samsung_Galaxy_S_II">Samsung
+											Phones</a> <small>(by <a href="https://twitter.com/hemasail">@hemasail</a>)
+										</small></li>
+										<li><a href="#Osama_bin_Laden|Muammar_Gaddafi">Osama vs.
+											Muammar</a></li>
+											<li><a href="#The_Beatles|Jesus">Beatles bigger than
+												Jesus?</a></li>
+												
+												<li><a href="#Santa_Claus|Easter_Bunny">Santa Claus vs.
+													Easter Bunny</a></li>
 
-						<li><a href="#Ramadan|Easter|Christmas">Season's Greetings II</a> <small>(by
-								<a href="https://twitter.com/berchr">@berchr</a>)
-						</small></li>
+													<li><a href="#Ramadan|Easter|Christmas">Season's Greetings II</a> <small>(by
+														<a href="https://twitter.com/berchr">@berchr</a>)
+													</small></li>
+
+
+													<li><a href="#Money|Love">Money vs. Love</a> <small>(by
+														<a href="https://www.facebook.com/yagiz.kargin">Yagiz</a>)
+													</small></li>
+
+
+													<li><a href="#Theory|Application">Theory vs. Application</a> <small>(by
+														<a href="https://www.facebook.com/yagiz.kargin">Yagiz</a>)
+													</small></li>
 
 
 
-					</ul>
 
-				</div>
-			</div>
-			<div class="span2">
-				<div id="legend"></div>
 
-				<br>
 
-				<div id="share" class="btn-group hidden-print">
-					<button id="startover" class="btn btn-mini">
-						<i class="icon-remove"></i> restart
-					</button>
-					<button class="btn btn-mini dropdown-toggle" data-toggle="dropdown">
-						share <i class="icon-share"></i>
-					</button>
-					<ul class="dropdown-menu">
-						<li><a id="share-twitter" href=""><img
-								src="img/twitter_16.png" /> Twitter</a></li>
-						<li><a id="share-facebook" href=""><img
-								src="img/facebook_16.png" /> Facebook</span></a></li>
-					</ul>
-				</div>
+												</ul>
 
-			</div>
-		</div>
-		<div class="row hidden-print">
-			<div class="span10">
-				<div id="slider"></div>
-			</div>
-		</div>
+											</div>
+										</div>
+										<div class="span2">
+											<div id="legend"></div>
 
-		<div class="row" id="footer">
-			<div class="span10">
-				<p class="info" id="print-url"></p>
-				<p class="info hidden-print">
-					<small>This graph shows weekly absolute page views for
-						Wikipedia pages selected by <em>you</em>. Database contains
-						41.775.815 measurements from 688.444 pages between 2008 and
-						mid-2013. The visualisation was developed at the <a
-						href="http://www.cwi.nl/research-groups/Database-Architectures">CWI
-							Database Architectures</a> group by <a
-						href="http://hannes.muehleisen.org/">Hannes M&uuml;hleisen</a> in
-						2013. Powered by <a href="http://www.monetdb.org/">MonetDB</a>, <a
-						href="http://code.shutterstock.com/rickshaw/">Rickshaw</a> and <a
-						href="http://twitter.github.io/bootstrap/">Bootstrap</a>. Icons by
-						<a href="http://glyphicons.com/">Glyphicons</a>. Data taken from
-						the <a href="http://dumps.wikimedia.org/other/pagecounts-raw/">Page
-							view statistics for Wikimedia projects</a>. Code is <a
-						href="https://github.com/hannesmuehleisen/wikistats">on GitHub</a>.
-					</small>
-				</p>
-			</div>
-		</div>
-	</div>
+											<br>
 
-	<script>
-		(function() {
+											<div id="share" class="btn-group hidden-print">
+												<button id="startover" class="btn btn-mini">
+													<i class="icon-remove"></i> restart
+												</button>
+												<button class="btn btn-mini dropdown-toggle" data-toggle="dropdown">
+													share <i class="icon-share"></i>
+												</button>
+												<ul class="dropdown-menu">
+													<li><a id="share-twitter" href=""><img
+														src="img/twitter_16.png" /> Twitter</a></li>
+														<li><a id="share-facebook" href=""><img
+															src="img/facebook_16.png" /> Facebook</span></a></li>
+														</ul>
+													</div>
 
-			var callback = "http://wikistats.ins.cwi.nl/export.php";
+												</div>
+											</div>
+											<div class="row hidden-print">
+												<div class="span10">
+													<div id="slider"></div>
+												</div>
+											</div>
 
-			var palette = new Rickshaw.Color.Palette();
-			var time = new Rickshaw.Fixtures.Time();
-			var tu = time.unit('week');
-			var year = time.unit('year');
+											<div class="row" id="footer">
+												<div class="span10">
+													<p class="info" id="print-url"></p>
+													<p class="info hidden-print">
+														<small>This graph shows weekly absolute page views for
+															Wikipedia pages selected by <em>you</em>. Database contains
+															41.775.815 measurements from 688.444 pages between 2008 and
+															mid-2013. The visualisation was developed at the <a
+															href="http://www.cwi.nl/research-groups/Database-Architectures">CWI
+															Database Architectures</a> group by <a
+															href="http://hannes.muehleisen.org/">Hannes M&uuml;hleisen</a> in
+															2013. Powered by <a href="http://www.monetdb.org/">MonetDB</a>, <a
+															href="http://code.shutterstock.com/rickshaw/">Rickshaw</a> and <a
+															href="http://twitter.github.io/bootstrap/">Bootstrap</a>. Icons by
+															<a href="http://glyphicons.com/">Glyphicons</a>. Data taken from
+															the <a href="http://dumps.wikimedia.org/other/pagecounts-raw/">Page
+															view statistics for Wikimedia projects</a>. Code is <a
+															href="https://github.com/hannesmuehleisen/wikistats">on GitHub</a>.
+														</small>
+													</p>
+												</div>
+											</div>
+										</div>
 
-			var data = [];
-			var graph = null;
-			var legend = null;
-			var highlighter;
-			var remover;
-			var slider;
+										<script>
+										(function() {
 
-			function initGraph() {
+											var callback = "http://wikistats.ins.cwi.nl/export.php";
 
-				graph = new Rickshaw.Graph({
-					element : document.querySelector('#chart'),
-					width : $("#chart").width(),
-					height : $("#chart").height(),
-					renderer : 'line',
-					series : data,
-					interpolation : "linear"
-				});
+											var palette = new Rickshaw.Color.Palette();
+											var time = new Rickshaw.Fixtures.Time();
+											var tu = time.unit('week');
+											var year = time.unit('year');
 
-				var hoverDetail = new Rickshaw.Graph.HoverDetail({
-					graph : graph,
-					xFormatter : function(x) {
-						return tu.formatter(new Date(x * 1000)) + " - "
-								+ tu.formatter(new Date((x + 604800) * 1000))
-					},
-					yFormatter : function(y) {
-						return Math.floor(y) + " Page Views"
-					}
-				});
+											var data = [];
+											var graph = null;
+											var legend = null;
+											var highlighter;
+											var remover;
+											var slider;
 
-				slider = new Rickshaw.Graph.RangeSlider({
-					graph : graph,
-					element : document.querySelector('#slider')
-				});
+											function initGraph() {
 
-			}
+												graph = new Rickshaw.Graph({
+													element : document.querySelector('#chart'),
+													width : $("#chart").width(),
+													height : $("#chart").height(),
+													renderer : 'line',
+													series : data,
+													interpolation : "linear"
+												});
 
-			$('#page').autocomplete({
-				source : function(request, response) {
-					$.ajax({
-						url : callback,
-						dataType : "jsonp",
-						data : {
-							suggest : request.term.replace(/ /g, '_')
-						},
-						success : function(data) {
-							response($.map(data, function(item) {
-								return {
-									label : item.replace(/_/g, ' '),
-									value : item
-								}
-							}));
-						}
-					});
-				},
-				minLength : 3,
-				select : function(event, ui) {
-					addPage(ui.item.value);
-					this.value = "";
-				},
-			}).keydown(function(e) {
-				if (e.keyCode === 13) {
-					$("#page").trigger('submit');
-					return false;
+												var hoverDetail = new Rickshaw.Graph.HoverDetail({
+													graph : graph,
+													xFormatter : function(x) {
+														return tu.formatter(new Date(x * 1000)) + " - "
+														+ tu.formatter(new Date((x + 604800) * 1000))
+													},
+													yFormatter : function(y) {
+														return Math.floor(y) + " Page Views"
+													}
+												});
 
-				}
-			});
+												slider = new Rickshaw.Graph.RangeSlider({
+													graph : graph,
+													element : document.querySelector('#slider')
+												});
 
-			$('#startover').click(function() {
-				$('#chart').empty();
-				$('#legend').empty();
-				$('#slider').slider("destroy");
-				$('#smoother').slider("destroy");
+											}
 
-				graph = null;
-				data = [];
+											$('#page').autocomplete({
+												source : function(request, response) {
+													$.ajax({
+														url : callback,
+														dataType : "jsonp",
+														data : {
+															suggest : request.term.replace(/ /g, '_')
+														},
+														success : function(data) {
+															response($.map(data, function(item) {
+																return {
+																	label : item.replace(/_/g, ' '),
+																	value : item
+																}
+															}));
+														}
+													});
+												},
+												minLength : 3,
+												select : function(event, ui) {
+													addPage(ui.item.value);
+													this.value = "";
+												},
+											}).keydown(function(e) {
+												if (e.keyCode === 13) {
+													$("#page").trigger('submit');
+													return false;
 
-				$('#startover').hide();
-				$('#share').hide();
+												}
+											});
 
-				window.location.hash = '';
-				document.title = 'Wikipedia Page Views';
-				$('#chart').css('background-color', '#e9e9e9');
-			});
+											$('#startover').click(function() {
+												$('#chart').empty();
+												$('#legend').empty();
+												$('#slider').slider("destroy");
+												$('#smoother').slider("destroy");
 
-			$('#startover').hide();
-			$('#share').hide();
+												graph = null;
+												data = [];
 
-			function addData(series) {
-				$.each(series, function(i, d) {
-					d.color = palette.color();
-					d.key = d.name;
-					d.name = d.name.replace(/_/g, ' ');
-					data.push(d);
-				});
+												$('#startover').hide();
+												$('#share').hide();
+
+												window.location.hash = '';
+												document.title = 'Wikipedia Page Views';
+												$('#chart').css('background-color', '#e9e9e9');
+											});
+
+											$('#startover').hide();
+											$('#share').hide();
+
+											function addData(series) {
+												$.each(series, function(i, d) {
+													d.color = palette.color();
+													d.key = d.name;
+													d.name = d.name.replace(/_/g, ' ');
+													data.push(d);
+												});
 
 				//Rickshaw.Series.zeroFill(data);
 
@@ -392,78 +406,78 @@ body {
 					$('#print-url').text(window.location.toString());
 
 				});
-		        
+
 				setTimeout(function() { window.changingHash = false;}, 500);
 
 
 				$('#share-facebook')
-						.attr(
-								'href',
-								'https://www.facebook.com/sharer/sharer.php?u='
-										+ encodeURIComponent(window.location
-												.toString())).attr('target',
-								'_new');
+				.attr(
+					'href',
+					'https://www.facebook.com/sharer/sharer.php?u='
+					+ encodeURIComponent(window.location
+						.toString())).attr('target',
+				'_new');
 
-				$('#share-twitter')
+						$('#share-twitter')
 						.attr(
-								'href',
-								'https://twitter.com/share?url='
-										+ encodeURIComponent(window.location
-												.toString())
-										+ '&via=hfmuehleisen&hashtags=wikistats&text='
-										+ encodeURIComponent(document.title))
+							'href',
+							'https://twitter.com/share?url='
+							+ encodeURIComponent(window.location
+								.toString())
+							+ '&via=hfmuehleisen&hashtags=wikistats&text='
+							+ encodeURIComponent(document.title))
 						.attr('target', '_new');
-			}
-
-			function handleError(err) {
-				console.log(err);
-			}
-
-			function addPage(terms) {
-				if (!$.isArray(terms)) {
-					var term = terms;
-					terms = [];
-					terms.push(term);
-				}
-				$("#page").prop('disabled', true);
-				if (graph == null) {
-					$("#chart").empty();
-				}
-
-				$('#chart').css('background-color', '#e9e9e9');
-
-				$.ajax({
-					url : callback,
-					dataType : 'jsonp',
-					success : addData,
-					error : handleError,
-					data : {
-						page : terms.join("|")
 					}
-				});
-			}
-			
-			$(window).on( 'hashchange', function(e) {
-				if (window.changingHash) {
-					return;
-				}
-				window.changingHash = true;
-				window.location.hash = decodeURIComponent(window.location.hash);
-				window.changingHash = false;
 
-				seriesp = window.location.hash;
-				if (seriesp.length > 1) {
-					var terms = seriesp.replace('#', '').split("|");
-					addPage(terms);
-				}
-			});
-			
-			$(window).trigger( 'hashchange');
+					function handleError(err) {
+						console.log(err);
+					}
 
-		})();
-	</script>
+					function addPage(terms) {
+						if (!$.isArray(terms)) {
+							var term = terms;
+							terms = [];
+							terms.push(term);
+						}
+						$("#page").prop('disabled', true);
+						if (graph == null) {
+							$("#chart").empty();
+						}
+
+						$('#chart').css('background-color', '#e9e9e9');
+
+						$.ajax({
+							url : callback,
+							dataType : 'jsonp',
+							success : addData,
+							error : handleError,
+							data : {
+								page : terms.join("|")
+							}
+						});
+					}
+
+					$(window).on( 'hashchange', function(e) {
+						if (window.changingHash) {
+							return;
+						}
+						window.changingHash = true;
+						window.location.hash = decodeURIComponent(window.location.hash);
+						window.changingHash = false;
+
+						seriesp = window.location.hash;
+						if (seriesp.length > 1) {
+							var terms = seriesp.replace('#', '').split("|");
+							addPage(terms);
+						}
+					});
+
+					$(window).trigger( 'hashchange');
+
+				})();
+				</script>
 
 
 
-</body>
-</html>
+			</body>
+			</html>
