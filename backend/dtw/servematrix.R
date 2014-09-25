@@ -38,10 +38,12 @@ dtwrecommend <- function(env){
 	candidates <- candidates[2:length(candidates)]
 
 	# run second iteration, dtw
-	refine <- pmatrix[pnames %in% candidates,]
-	dists2 <- dist(query,refine,method="DTW")
-	resids <- head(order(dists2),resultsize)
-	results <- data.frame(page=dimnames(dists2)[[2]][resids],distance=as.numeric(dists2[resids]))
+	# refine <- pmatrix[pnames %in% candidates,]
+	# dists2 <- dist(query,refine,method="DTW")
+	
+	resids <- head(order(dists),resultsize+1)
+	resids <- resids[2:length(resids)]
+	results <- data.frame(page=dimnames(dists)[[2]][resids],distance=as.numeric(dists[resids]))
 	resultobj <- list()
 	resultobj$related <- unname(split(results, rownames(results)))
 	# return result
@@ -66,6 +68,6 @@ dtwrecommend <- function(env){
 
 }
 s$add(app=dtwrecommend, name='dtwrecommend')
-
+message("Server up and running")
 # wait to keep rook running
 while(TRUE) Sys.sleep(.Machine$integer.max)

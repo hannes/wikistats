@@ -12,6 +12,7 @@
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/bootstrap-theme.min.css" rel="stylesheet">
 	<link type="text/css" rel="stylesheet" href="css/rickshaw.min.css">
 	<link type="text/css" rel="stylesheet" href="css/jquery-ui.min.css">
 	<link rel="shortcut icon"
@@ -28,7 +29,7 @@
 
 	<style>
 	body {
-		padding-top: 60px;
+		padding-top: 10px;
 	}
 
 	#chart {
@@ -59,7 +60,8 @@
 	}
 
 	.info {
-		text-align: justify
+		text-align: justify;
+		color: gray;
 	}
 
 	#smoother {
@@ -103,33 +105,14 @@
 			display: inherit;
 		}
 	}
+
+
 	</style>
 
 </head>
 
 <body>
 
-	<div class="navbar navbar-fixed-top">
-		<div class="navbar-inner">
-			<div class="container">
-				<span class="brand hidden-print">Wikipedia Page Views</span>
-				<h3 class="brand" id="print-title"></h3>
-				<form class="navbar-search pull-left hidden-print">
-					<input id="page" type="text"
-					placeholder="Start typing a page title here…" class="search-query">
-				</form>
-
-
-				<div class="logos">
-					<a href="http://www.monetdb.org"><img src="img/monetdb.png" /></a>&nbsp;<a
-					href="http://www.cwi.nl/research-groups/Database-Architectures"><img
-					src="img/cwi.png" /></a>&nbsp;<a
-					href="http://www.commit-nl.nl/"><img
-					src="img/commit.png" /></a>
-				</div>
-			</div>
-		</div>
-	</div>
 
 	<div class="container">
 		<noscript>
@@ -142,8 +125,55 @@
 			</div>
 		</noscript>
 
+
+<div id="relwork" class="modal bs-example-modal-lg" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Finding related pages</h4>
+      </div>
+      <div class="modal-body">
+            <p>Currently using R magic to find pages with similar interest curves to '<span id="relwork-label"></span>'.</p>
+		   	<div class="progress">
+		  <div id="relwork-bar" class="progress-bar progress-bar-striped active" role="progressbar">
+		  </div>
+		</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+<div class="col-md-12">
+
+<nav class="navbar navbar-default " role="navigation">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">Wikipedia Page Views</a>
+    </div>
+    
+      <form class="navbar-form navbar-left" role="search">
+        <div class="form-group">
+          <input id="page" type="text" class="form-control search-query"  placeholder="Start typing a page title here…" style="width:250px">
+        </div>
+      </form>
+      <div class="logos">
+					<!--<a href="http://www.monetdb.org"><img src="img/monetdb.png" /></a>&nbsp;-->
+					<a
+					href="http://www.cwi.nl/research-groups/Database-Architectures"><img
+					src="img/cwi.png" /></a>&nbsp;<a
+					href="http://www.commit-nl.nl/"><img
+					src="img/commit.png" /></a>
+				</div>
+  </div><!-- /.container-fluid -->
+</nav>
+
+</div>
+</div>
+
 		<div class="row">
-			<div class="span10">
+
+			<div class="col-md-10">
 				<div id="chart">
 					<div class="alert alert-info">Start by typing a Wikipedia
 						page name in search box above and wait for suggestions.</div>
@@ -195,17 +225,21 @@
 
 											</div>
 										</div>
-										<div class="span2">
+										<div class="col-md-2">
 											<div id="legend"></div>
 
 											<br>
 
-											<div id="share" class="btn-group hidden-print">
-												<button id="startover" class="btn btn-mini">
-													<i class="icon-remove"></i> restart
+												<button id="related" class="btn btn-primary">
+													<i class="glyphicon glyphicon-eye-open"></i> find similar
 												</button>
-												<button class="btn btn-mini dropdown-toggle" data-toggle="dropdown">
-													share <i class="icon-share"></i>
+											<br>											<br>
+
+
+											<div id="share" class="btn-group hidden-print">
+								
+												<button class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+													share <i class="glyphicon glyphicon-share"></i>
 												</button>
 												<ul class="dropdown-menu">
 													<li><a id="share-twitter" href=""><img
@@ -213,28 +247,31 @@
 														<li><a id="share-facebook" href=""><img
 															src="img/facebook_16.png" /> Facebook</span></a></li>
 														</ul>
+																		<button id="startover" class="btn btn-default btn-xs">
+													<i class="glyphicon glyphicon-remove"></i> clear
+												</button>
 													</div>
 
 												</div>
 											</div>
 											<div class="row hidden-print">
-												<div class="span10">
+												<div class="col-md-10">
 													<div id="slider"></div>
 												</div>
 											</div>
-
+<!--
 											<div class="row" id="footer">
-												<div class="span10">
+												<div class="col-md-10">
 													<p class="info" id="print-url"></p>
 													<p class="info hidden-print">
 														<small>This graph shows weekly absolute page views for
 															Wikipedia pages selected by <em>you</em>. Database contains
-															52.286.138 measurements from 831.106 pages between January 2008 and
-															December 2013. The visualisation was developed at the <a
+															52.536.163 measurements from 832.357 pages between January 2008 and
+															August 2014. The visualisation was developed at the <a
 															href="http://www.cwi.nl/research-groups/Database-Architectures">CWI
 															Database Architectures</a> group by <a
 															href="http://hannes.muehleisen.org/">Hannes M&uuml;hleisen</a> in
-															2013. Powered by <a href="http://www.monetdb.org/">MonetDB</a>, <a
+															2014. Powered by <a href="http://www.monetdb.org/">MonetDB</a>, <a
 															href="http://code.shutterstock.com/rickshaw/">Rickshaw</a> and <a
 															href="http://twitter.github.io/bootstrap/">Bootstrap</a>. Icons by
 															<a href="http://glyphicons.com/">Glyphicons</a>. Data taken from
@@ -245,6 +282,7 @@
 													</p>
 												</div>
 											</div>
+											-->
 										</div>
 
 										<script>
@@ -335,14 +373,66 @@
 
 												$('#startover').hide();
 												$('#share').hide();
+												$('#related').hide();
+
 
 												window.location.hash = '';
 												document.title = 'Wikipedia Page Views';
+												//$('#chart').css('background-color', '#e9e9e9');
+											});
+
+											$('#related').click(function() {
+												// TODO
+												$("#page").prop('disabled', true);
 												$('#chart').css('background-color', '#e9e9e9');
+												$('#relwork-label').text(data[0].name);
+
+       			$('#relwork-bar').css('width', '0%');   
+												$('#relwork').modal('show');
+
+
+	var max = 4300;
+	var current = 0;
+    function update() {
+       current += 500;
+       var perc = Math.round((current/max)*100);
+       console.log(perc);
+       $('#relwork-bar').css('width', perc+'%');   
+       if (current >= max) clearInterval(interval);
+    };
+    var interval = setInterval(update, 500);
+				
+
+												$.ajax({
+													url : 'http://localhost:1337/custom/dtwrecommend',
+													dataType : 'jsonp',
+													success : function(response) {
+
+														var rterms = [];
+														$.each(response.related, function(i, d) {
+															rterms.push(d.page);
+														});
+														addPage(rterms);
+														
+													$('#relwork').modal('hide')
+   
+
+													},
+													error : handleError,
+													data : {
+														p : data[0].key,
+														n:5
+													}
+												});
+
+
 											});
 
 											$('#startover').hide();
 											$('#share').hide();
+											$('#related').hide();
+
+
 
 											function addData(series) {
 												$.each(series, function(i, d) {
@@ -388,6 +478,10 @@
 				$('#page').val('');
 				$('#startover').show();
 				$('#share').show();
+				$('#related').show();
+				if (data.length > 1) {
+					$('#related').hide();
+				}
 
 				window.changingHash = true;
 				
@@ -479,7 +573,7 @@
 				})();
 				</script>
 				
-<!-- Google Analytics -->
+<!-- Google Analytics
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -489,7 +583,7 @@
   ga('create', 'UA-45535529-1', 'cwi.nl');
   ga('send', 'pageview');
 
-</script>
+</script> -->
 
 			</body>
 			</html>
