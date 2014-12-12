@@ -19,7 +19,7 @@ UPDATE weekcountenf SET "count"="count"*1.42 where "year"=2009 and "week"=53;
 --2010: 5 (52)
 UPDATE weekcountenf SET "count"="count"*1.28 where "year"=2010 and "week"=52;
 --2011: 6 (52)
-UPDATE weekcountenf SET "count"="count"*1.14 where "year"=2010 and "week"=52;
+UPDATE weekcountenf SET "count"="count"*1.14 where "year"=2011 and "week"=52;
 --2012: 7 (52)
 --2013: 7 (52)
 
