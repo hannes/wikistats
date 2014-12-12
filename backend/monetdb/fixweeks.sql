@@ -11,6 +11,8 @@ UPDATE weekcountenf SET "count"="count"*1.14 where "year"=2010 and "week"=1;
 --2012: 7
 --2013: 6
 UPDATE weekcountenf SET "count"="count"*1.14 where "year"=2013 and "week"=1;
+--2014: 5
+UPDATE weekcountenf SET "count"="count"*1.28 where "year"=2013 and "week"=1;
 
 --Last Week Days
 --2008: 7 (52)
