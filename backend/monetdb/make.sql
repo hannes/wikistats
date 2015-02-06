@@ -3,8 +3,8 @@ drop table redirect;
 drop table page;
 
 CREATE TABLE weekcountenf (
-	"lang"  VARCHAR(2),
-	"page"  VARCHAR(200),
+	"lang"  string,
+	"page"  string,
 	"year"  INT,
 	"week"  INT,
 	"count" BIGINT

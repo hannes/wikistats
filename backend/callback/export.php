@@ -31,7 +31,7 @@ if (isset($_REQUEST['page'])) {
 	}
 
 	foreach ($pages as $page) {
-		if (!mb_ereg("^[[:upper:]][[:alnum:]_()-]+$",$page)) {
+		if (!mb_ereg("^[[:upper:]][[:alnum:]_().-]+$",$page)) {
 			http_response_code(400);
 			die("Invalid page[] request parameter(s)");
 		}
@@ -51,7 +51,7 @@ if (isset($_REQUEST['page'])) {
 if (isset($_REQUEST['suggest'])) {
 	$suggest = strtolower(trim($_REQUEST['suggest']));
 
-	if (!mb_ereg("^[[:alnum:][:space:]_()-]+$",$suggest)) {
+	if (!mb_ereg("^[[:alnum:][:space:]_().-]+$",$suggest)) {
 		http_response_code(400);
 		die("Invalid suggest request parameter(s)");
 	}

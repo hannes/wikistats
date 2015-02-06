@@ -19,3 +19,4 @@ with data;
 create view weekcountenfsmart as select 'en' as "lang","page","year","week","count" from weekcountenfid join pagenames on weekcountenfid.id=pagenames.id;
 
 create table pagessuggest as (select 'en' as lang,page,countsum from pagenames join (select id,sum("count") as countsum from weekcountenfid group by id) as countids on pagenames.id=countids.id) with data;
+
